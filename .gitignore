@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+data/**/*.hdf5
+data/**/*.hdf5.part
