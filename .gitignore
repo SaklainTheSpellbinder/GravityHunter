@@ -1,6 +1,12 @@
 .venv/
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
-data/**/*.hdf5
+.DS_Store
+
+# Interrupted/partial local data transfers.
 data/**/*.hdf5.part
+
+# Local diagnostics generated during development.
+GravityHunter_Diagnostics.txt
+collect_diagnostics.ps1

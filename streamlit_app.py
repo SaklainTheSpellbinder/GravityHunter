@@ -25,75 +25,110 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-CREAM = "#F4E7C2"
-CREAM_DIM = "#D1C3A2"
-NAVY = "#04111F"
-NAVY_2 = "#0A213B"
-BLUE = "#78A9D4"
-GOLD = "#E8C66A"
-PURPLE = "#B39AD9"
-GREEN = "#9DD9B5"
-RED = "#E7A2A2"
-GRID = "rgba(244,231,194,0.10)"
+CREAM = "#F1E6C5"
+CREAM_DIM = "#B8B09C"
+NAVY = "#06111E"
+NAVY_2 = "#0C1C2D"
+PANEL = "#0D1D30"
+TEXT = "#DDE5EC"
+MUTED = "#95A8BA"
+BLUE = "#6F9FC6"
+GOLD = "#D3B76B"
+PURPLE = "#9A8FC1"
+GREEN = "#86C8AA"
+RED = "#D98F8F"
+GRID = "rgba(210,220,230,0.09)"
+TRACE_COLORS = [BLUE, CREAM, GREEN, PURPLE, GOLD]
 PHASE_COLORS = {
-    "Inspiral": "rgba(81,143,189,0.13)",
-    "Merger": "rgba(232,198,106,0.18)",
-    "Ringdown": "rgba(179,154,217,0.15)",
+    "Inspiral": "rgba(111,159,198,0.12)",
+    "Merger": "rgba(211,183,107,0.17)",
+    "Ringdown": "rgba(154,143,193,0.13)",
 }
+
+# Display settings are assigned from the sidebar before any page is rendered.
+DISPLAY_MODE = "Auto focus"
+ROBUST_AMPLITUDE = True
+ADAPTIVE_CONTRAST = True
 
 GLOBAL_CSS = f"""
 <style>
-:root {{ --cream:{CREAM}; --navy:{NAVY}; }}
+:root {{ --cream:{CREAM}; --navy:{NAVY}; --panel:{PANEL}; --text:{TEXT}; --muted:{MUTED}; }}
+html, body {{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}}
 .stApp {{
-  color: var(--cream);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
   background-color: {NAVY};
   background-image:
-    radial-gradient(circle at 18px 24px, rgba(244,231,194,.82) 0 1.1px, transparent 1.65px),
-    radial-gradient(circle at 72px 88px, rgba(244,231,194,.48) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 35px 106px, rgba(244,231,194,.30) 0 .8px, transparent 1.3px),
-    radial-gradient(circle at 115px 38px, rgba(244,231,194,.23) 0 .7px, transparent 1.2px),
-    linear-gradient(160deg, #04111F 0%, #071A31 52%, #020B15 100%);
-  background-size: 140px 140px, 180px 180px, 120px 120px, 210px 210px, auto;
+    radial-gradient(circle at 24px 28px, rgba(241,230,197,.34) 0 .85px, transparent 1.25px),
+    radial-gradient(circle at 96px 92px, rgba(241,230,197,.18) 0 .65px, transparent 1.05px),
+    linear-gradient(158deg, #06111E 0%, #081827 55%, #040B13 100%);
+  background-size: 190px 190px, 260px 260px, auto;
   background-attachment: fixed;
 }}
-[data-testid="stHeader"] {{ background: rgba(4,17,31,.74); }}
+[data-testid="stHeader"] {{ background: rgba(6,17,30,.82); }}
 [data-testid="stSidebar"] {{
-  background: rgba(5, 22, 42, .97);
-  border-right: 1px solid rgba(244,231,194,.12);
+  background: rgba(8,24,40,.98);
+  border-right: 1px solid rgba(221,229,236,.09);
 }}
-[data-testid="stSidebar"] * {{ color: var(--cream); }}
-.block-container {{ max-width: 1500px; padding-top: 1.6rem; padding-bottom: 4rem; }}
-h1,h2,h3,h4 {{ color:var(--cream)!important; letter-spacing:-.02em; }}
-p,li,label {{ color:#E7E5DE; }}
+[data-testid="stSidebar"] * {{ color: var(--text); }}
+/* Streamlit uses Material Symbols ligatures for sidebar/expander icons.
+   Never let the application font override that icon font, otherwise names
+   such as keyboard_double_arrow_left are rendered as literal text. */
+span[data-testid="stIconMaterial"],
+[data-testid="stIconMaterial"] {{
+  font-family: "Material Symbols Rounded" !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  font-size: inherit;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+  direction: ltr !important;
+  -webkit-font-feature-settings: "liga" !important;
+  font-feature-settings: "liga" !important;
+  -webkit-font-smoothing: antialiased;
+}}
+.block-container {{ max-width: 1480px; padding-top: 1.35rem; padding-bottom: 3.5rem; }}
+h1,h2,h3,h4 {{ color:var(--cream)!important; letter-spacing:-.018em; }}
+p,li,label {{ color:var(--text); }}
 .gh-hero {{
-  background: linear-gradient(135deg, rgba(15,52,88,.90), rgba(4,17,31,.82));
-  border: 1px solid rgba(244,231,194,.19);
-  box-shadow: 0 18px 46px rgba(0,0,0,.25);
-  border-radius: 24px; padding: 26px 30px 23px; margin-bottom:18px;
+  background: linear-gradient(132deg, rgba(13,38,62,.91), rgba(8,24,40,.90));
+  border: 1px solid rgba(221,229,236,.10);
+  box-shadow: 0 12px 34px rgba(0,0,0,.20);
+  border-radius: 18px; padding: 22px 25px 20px; margin-bottom:16px;
 }}
-.gh-kicker {{ color:{CREAM_DIM}; text-transform:uppercase; letter-spacing:.16em; font-size:.74rem; font-weight:800; }}
-.gh-title {{ color:{CREAM}; font-size:2.35rem; line-height:1.04; font-weight:780; margin:.35rem 0 .55rem; }}
-.gh-sub {{ color:#CDD9E4; max-width:1050px; font-size:1rem; }}
-.gh-card {{ background:rgba(9,31,58,.80); border:1px solid rgba(244,231,194,.14); border-radius:18px; padding:15px 17px; min-height:108px; box-shadow:0 10px 26px rgba(0,0,0,.15); }}
-.gh-card .value {{ color:{CREAM}; font-size:1.48rem; font-weight:760; }}
-.gh-card .label {{ color:#9FB7CD; font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; }}
-.gh-card .note {{ color:#C6D2DE; font-size:.82rem; margin-top:.35rem; }}
-.gh-status {{ border-radius:22px; padding:19px 22px; border:1px solid rgba(244,231,194,.15); margin:.35rem 0 1rem; }}
-.gh-status.good {{ background:linear-gradient(120deg, rgba(30,101,80,.30),rgba(9,31,58,.82)); box-shadow:0 0 36px rgba(157,217,181,.08); }}
-.gh-status.quiet {{ background:linear-gradient(120deg,rgba(45,69,99,.42),rgba(9,31,58,.82)); }}
-.gh-status.bad {{ background:linear-gradient(120deg,rgba(112,50,50,.30),rgba(9,31,58,.82)); }}
-.gh-status .big {{ font-size:1.55rem; font-weight:800; color:{CREAM}; }}
-.gh-status .small {{ color:#C4D2DE; font-size:.88rem; }}
-.gh-phase {{ border-radius:16px; padding:13px 15px; background:rgba(8,28,53,.72); border:1px solid rgba(244,231,194,.12); min-height:110px; }}
-.gh-phase .phase-name {{ font-size:1.05rem; font-weight:760; color:{CREAM}; }}
-.gh-phase .phase-note {{ color:#BED0DF; font-size:.84rem; margin-top:.3rem; }}
-.gh-pill {{ display:inline-block; padding:6px 10px; margin:3px 4px 3px 0; border-radius:999px; border:1px solid rgba(244,231,194,.16); background:rgba(120,169,212,.08); color:{CREAM}; font-size:.77rem; }}
-.gh-small {{ color:#AFC2D3; font-size:.82rem; }}
-[data-testid="stMetric"] {{ background:rgba(9,31,58,.72); border:1px solid rgba(244,231,194,.12); padding:11px 13px; border-radius:16px; }}
-[data-testid="stMetricLabel"] {{ color:#9FB5CB; }}
-[data-testid="stMetricValue"] {{ color:{CREAM}; }}
-div[data-testid="stExpander"] {{ background:rgba(8,28,53,.68); border-color:rgba(244,231,194,.12); border-radius:14px; }}
-hr {{ border-color:rgba(244,231,194,.12); }}
+.gh-kicker {{ color:{CREAM_DIM}; text-transform:uppercase; letter-spacing:.14em; font-size:.70rem; font-weight:700; }}
+.gh-title {{ color:{CREAM}; font-size:2.02rem; line-height:1.08; font-weight:730; margin:.32rem 0 .48rem; }}
+.gh-sub {{ color:#C3D0DB; max-width:1080px; font-size:.96rem; line-height:1.55; }}
+.gh-card {{
+  background:rgba(13,29,48,.84); border:1px solid rgba(221,229,236,.10);
+  border-radius:14px; padding:14px 16px; min-height:104px;
+  box-shadow:0 7px 18px rgba(0,0,0,.13);
+}}
+.gh-card .value {{ color:{CREAM}; font-size:1.36rem; font-weight:720; font-variant-numeric:tabular-nums; }}
+.gh-card .label {{ color:#91A6B9; font-size:.72rem; text-transform:uppercase; letter-spacing:.075em; }}
+.gh-card .note {{ color:#C0CCD6; font-size:.80rem; margin-top:.32rem; line-height:1.35; }}
+.gh-status {{ border-radius:16px; padding:17px 20px; border:1px solid rgba(221,229,236,.10); margin:.3rem 0 .95rem; }}
+.gh-status.good {{ background:linear-gradient(120deg, rgba(38,91,74,.27),rgba(13,29,48,.88)); }}
+.gh-status.quiet {{ background:linear-gradient(120deg,rgba(42,61,82,.40),rgba(13,29,48,.88)); }}
+.gh-status.bad {{ background:linear-gradient(120deg,rgba(100,48,48,.28),rgba(13,29,48,.88)); }}
+.gh-status .big {{ font-size:1.30rem; font-weight:760; color:{CREAM}; }}
+.gh-status .small {{ color:#C2CFDA; font-size:.86rem; line-height:1.45; }}
+.gh-phase {{ border-radius:14px; padding:12px 14px; background:rgba(13,29,48,.76); border:1px solid rgba(221,229,236,.09); min-height:108px; }}
+.gh-phase .phase-name {{ font-size:1rem; font-weight:720; color:{CREAM}; }}
+.gh-phase .phase-note {{ color:#BBC9D4; font-size:.82rem; margin-top:.28rem; }}
+.gh-pill {{ display:inline-block; padding:5px 9px; margin:3px 4px 3px 0; border-radius:999px; border:1px solid rgba(221,229,236,.10); background:rgba(111,159,198,.07); color:#D8E1E9; font-size:.75rem; }}
+.gh-small {{ color:#98ABBC; font-size:.80rem; }}
+.gh-display-note {{ color:#8FA3B5; font-size:.76rem; margin-top:-.25rem; margin-bottom:.55rem; }}
+[data-testid="stMetric"] {{ background:rgba(13,29,48,.80); border:1px solid rgba(221,229,236,.09); padding:10px 12px; border-radius:13px; }}
+[data-testid="stMetricLabel"] {{ color:#90A5B8; }}
+[data-testid="stMetricValue"] {{ color:{CREAM}; font-variant-numeric:tabular-nums; }}
+div[data-testid="stExpander"] {{ background:rgba(12,28,46,.72); border-color:rgba(221,229,236,.09); border-radius:12px; }}
+hr {{ border-color:rgba(221,229,236,.09); }}
 </style>
 """
 st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
@@ -128,10 +163,15 @@ def style_figure(fig: go.Figure, *, height: int = 390, title: str | None = None)
         height=height,
         title=title,
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(4,17,31,.76)",
-        font=dict(color=CREAM),
-        margin=dict(l=35, r=20, t=55 if title else 25, b=38),
-        legend=dict(bgcolor="rgba(0,0,0,0)"),
+        plot_bgcolor="rgba(6,17,30,.72)",
+        font=dict(
+            color=TEXT,
+            family='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+            size=12,
+        ),
+        title_font=dict(color=CREAM, size=16),
+        margin=dict(l=42, r=22, t=56 if title else 28, b=42),
+        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color=TEXT)),
         hoverlabel=dict(bgcolor=NAVY_2, font_color=CREAM),
     )
     fig.update_xaxes(gridcolor=GRID, zerolinecolor=GRID, title_font=dict(color=CREAM_DIM))
@@ -139,13 +179,92 @@ def style_figure(fig: go.Figure, *, height: int = 390, title: str | None = None)
     return fig
 
 
+def _robust_linear_range(series, percentile: float = 99.5) -> tuple[float, float] | None:
+    arrays = []
+    for y in series:
+        a = np.asarray(y, dtype=float).ravel()
+        a = a[np.isfinite(a)]
+        if a.size:
+            arrays.append(a)
+    if not arrays:
+        return None
+    v = np.concatenate(arrays)
+    if v.size < 4:
+        return None
+    lo = float(np.nanpercentile(v, 100.0 - percentile))
+    hi = float(np.nanpercentile(v, percentile))
+    if not np.isfinite(lo) or not np.isfinite(hi) or hi <= lo:
+        return None
+    # Strain-like signals are naturally centered around zero; symmetric limits
+    # keep positive/negative excursions visually comparable.
+    if lo < 0 < hi:
+        lim = max(abs(lo), abs(hi)) * 1.08
+        return -lim, lim
+    pad = 0.08 * (hi - lo)
+    return lo - pad, hi + pad
+
+
 def line_figure(x, ys, labels, *, x_label="Time (s)", y_label="Amplitude", title=None, height=390):
+    x_arr = np.asarray(x)
+    y_arrs = [np.asarray(y) for y in ys]
+    if x_arr.size > 30000:
+        idx = np.linspace(0, x_arr.size - 1, 30000).astype(int)
+        plot_x = x_arr[idx]
+        plot_ys = [y[idx] for y in y_arrs]
+    else:
+        plot_x = x_arr
+        plot_ys = y_arrs
+
     fig = go.Figure()
-    for y, label in zip(ys, labels):
-        fig.add_trace(go.Scatter(x=x, y=y, mode="lines", name=label, line=dict(width=1.25)))
+    for i, (y, label) in enumerate(zip(plot_ys, labels)):
+        fig.add_trace(
+            go.Scatter(
+                x=plot_x,
+                y=y,
+                mode="lines",
+                name=label,
+                line=dict(width=1.25, color=TRACE_COLORS[i % len(TRACE_COLORS)]),
+            )
+        )
     fig.update_xaxes(title=x_label)
     fig.update_yaxes(title=y_label)
+    if ROBUST_AMPLITUDE:
+        yrange = _robust_linear_range(y_arrs)
+        if yrange is not None:
+            fig.update_yaxes(range=list(yrange))
     return style_figure(fig, height=height, title=title)
+
+
+def display_mask(t: np.ndarray, center: float | None, half_width: float) -> np.ndarray:
+    """Return a display-only time mask. DSP calculations always use full data."""
+    t = np.asarray(t, dtype=float)
+    if DISPLAY_MODE == "Full record" or center is None:
+        return np.ones(t.shape, dtype=bool)
+    lo = max(float(t[0]), float(center) - float(half_width))
+    hi = min(float(t[-1]), float(center) + float(half_width))
+    return (t >= lo) & (t <= hi)
+
+
+def spectrogram_limits(db: np.ndarray, mask: np.ndarray | None = None, floor_db: float = -75.0) -> tuple[float, float]:
+    """Display-only contrast limits; does not alter STFT power or inference."""
+    if not ADAPTIVE_CONTRAST:
+        return floor_db, 0.0
+    vals = np.asarray(db if mask is None else db[mask], dtype=float).ravel()
+    vals = vals[np.isfinite(vals)]
+    if vals.size < 32:
+        return floor_db, 0.0
+    lo = max(floor_db, float(np.nanpercentile(vals, 5.0)))
+    hi = min(0.0, float(np.nanpercentile(vals, 99.7)))
+    if hi - lo < 20.0:
+        lo = max(floor_db, hi - 20.0)
+    return lo, hi
+
+
+def display_note() -> None:
+    st.markdown(
+        "<div class='gh-display-note'>Display framing and contrast affect visualization only; all DSP calculations use the unchanged full-resolution arrays.</div>",
+        unsafe_allow_html=True,
+    )
 
 
 def add_phase_regions(fig: go.Figure, phases: dict[str, tuple[float, float]], *, relative_to: float = 0.0):
@@ -225,13 +344,32 @@ page = st.sidebar.radio(
         "Source Parameters",
         "Inspiral Diagnostics",
         "Audio Reconstruction",
-        "Synthetic Validation",
+        "Validation",
     ],
     label_visibility="collapsed",
 )
 
 st.sidebar.markdown("---")
 detector_name = st.sidebar.radio("Detector channel", ["H1", "L1"], horizontal=True)
+with st.sidebar.expander("View settings", expanded=False):
+    DISPLAY_MODE = st.radio(
+        "Time-domain framing",
+        ["Auto focus", "Full record"],
+        horizontal=True,
+        help="Auto focus frames the selected event/candidate for readability. It never changes the underlying signal-processing calculation.",
+    )
+    ROBUST_AMPLITUDE = st.checkbox(
+        "Robust amplitude scale",
+        value=True,
+        help="Uses percentile-based y-axis limits to prevent isolated glitches from flattening the visible waveform. Data are not clipped or modified.",
+    )
+    ADAPTIVE_CONTRAST = st.checkbox(
+        "Adaptive spectrogram contrast",
+        value=True,
+        help="Uses robust dB display limits so weak time-frequency structure remains visible. STFT values are unchanged.",
+    )
+    st.caption("Visualization controls only — DSP outputs are unchanged.")
+
 with st.sidebar.expander("Detection settings", expanded=False):
     threshold = st.slider(
         "Candidate SNR threshold",
@@ -309,7 +447,7 @@ if page == "Overview":
             if not h1d.detected and not l1d.detected:
                 status_banner("✓ QUIET WINDOW: NO EVENT CANDIDATE", "This is genuine detector strain away from the merger. The same pipeline runs, but the selected threshold produces no candidate in either detector.", "quiet")
             else:
-                status_banner("QUIET WINDOW PRODUCED A CANDIDATE", "This is useful rather than hidden: the threshold/processing produced a false alarm in off-source data. Raise the threshold or inspect the noise feature.", "bad")
+                status_banner("QUIET WINDOW PRODUCED A CANDIDATE", "The configured threshold produced a candidate in off-source data. This is classified as a false alarm and should be treated as detector noise, not an astrophysical event.", "bad")
 
         cards([
             ("Source", "REAL GWOSC", spec.release or "local"),
@@ -318,17 +456,18 @@ if page == "Overview":
             ("L1 peak SNR", f"{l1d.peak_snr:.2f}", f"t={l1d.peak_time_s:.3f}s" if l1d.peak_time_s is not None else "no candidate"),
         ])
         st.markdown("### Pipeline")
-        st.markdown("<span class='gh-pill'>local HDF5</span><span class='gh-pill'>FFT</span><span class='gh-pill'>Welch PSD</span><span class='gh-pill'>notch + band-pass</span><span class='gh-pill'>whitening</span><span class='gh-pill'>STFT</span><span class='gh-pill'>two-quadrature matched filter</span><span class='gh-pill'>SNR</span><span class='gh-pill'>H1/L1 coincidence</span><span class='gh-pill'>chirp-mass inference</span><span class='gh-pill'>synchronized merger timeline</span>", unsafe_allow_html=True)
+        st.markdown("<span class='gh-pill'>local HDF5</span><span class='gh-pill'>FFT</span><span class='gh-pill'>Welch PSD</span><span class='gh-pill'>notch + band-pass</span><span class='gh-pill'>whitening</span><span class='gh-pill'>STFT</span><span class='gh-pill'>two-quadrature matched filter</span><span class='gh-pill'>SNR</span><span class='gh-pill'>H1/L1 coincidence</span><span class='gh-pill'>inspiral diagnostics</span><span class='gh-pill'>synchronized merger timeline</span>", unsafe_allow_html=True)
 
-        if spec.expected_signal and event_t is not None:
-            lo, hi = event_t - spec.display_half_width_s, event_t + spec.display_half_width_s
-        else:
-            lo, hi = 0.0, min(det.record.duration, 5.0)
-        mask = (time >= lo) & (time <= hi)
+        mask = display_mask(
+            time,
+            event_t if spec.expected_signal else None,
+            max(spec.display_half_width_s, 0.35),
+        )
         fig = line_figure(time[mask], [det.raw[mask], det.filtered[mask]], ["Raw strain", "Filtered"], title=f"{detector_name} selected region", y_label="Strain / filtered strain")
         if event_t is not None:
             fig.add_vline(x=event_t, line_dash="dash", line_color=GOLD, annotation_text="GWOSC reference")
         st.plotly_chart(fig, use_container_width=True)
+        display_note()
     else:
         hero("CONTROLLED VALIDATION", "Synthetic signal recovery", "A deterministic injection case for regression testing of filtering, whitening, matched filtering and event-time recovery.")
         d = detect_best_candidate(base["snr"], base["lags"], fs, threshold=threshold, prominence=1.0)
@@ -354,7 +493,9 @@ elif page == "Waveform Morphology":
         fig = line_figure(d.record.time, [d.white], [f"{detector_name} whitened"], title="Whitened quiet strain", y_label="Standardized amplitude", height=420)
         st.plotly_chart(fig, use_container_width=True)
         fm = d.stft_freq <= min(spec.fband[1], 900)
-        heat = go.Figure(go.Heatmap(x=d.stft_time, y=d.stft_freq[fm], z=power_to_db(d.stft_power, floor_db=-70)[fm], colorscale="Cividis", zmin=-70, zmax=0, colorbar=dict(title="dB rel.")))
+        quiet_db = power_to_db(d.stft_power, floor_db=-70)
+        zlo, zhi = spectrogram_limits(quiet_db[fm], floor_db=-70)
+        heat = go.Figure(go.Heatmap(x=d.stft_time, y=d.stft_freq[fm], z=quiet_db[fm], colorscale="Cividis", zmin=zlo, zmax=zhi, colorbar=dict(title="dB rel.")))
         heat.update_xaxes(title="Time (s)"); heat.update_yaxes(title="Frequency (Hz)")
         st.plotly_chart(style_figure(heat, height=480, title="Quiet spectrogram — no rising merger track expected"), use_container_width=True)
     else:
@@ -378,7 +519,7 @@ elif page == "Waveform Morphology":
             with col:
                 st.markdown(f"<div class='gh-phase'><div class='phase-name'>{name}</div><div class='phase-note'>{phase_text[name]}</div><div class='gh-small'>{(a-event_t)*1000:.1f} to {(b-event_t)*1000:.1f} ms relative to peak</div></div>", unsafe_allow_html=True)
 
-        # Clear reference morphology — the stage plot the presenter can point to.
+        # Reference morphology around the event.
         tr = real.template
         tt = tr.time_from_reference
         stage_min = min(v[0] - event_t for v in real.phase_intervals_absolute.values()) - 0.03
@@ -395,9 +536,8 @@ elif page == "Waveform Morphology":
 
         # Real detector view around the same event.
         d = real.h1 if detector_name == "H1" else real.l1
-        lo, hi = event_t - spec.display_half_width_s, event_t + spec.display_half_width_s
-        mask = (d.record.time >= lo) & (d.record.time <= hi)
-        fig_real = go.Figure(go.Scatter(x=d.record.time[mask]-event_t, y=d.white[mask], mode="lines", name=f"{detector_name} whitened", line=dict(width=1.0)))
+        mask = display_mask(d.record.time, event_t, max(spec.display_half_width_s, 0.35))
+        fig_real = go.Figure(go.Scatter(x=d.record.time[mask]-event_t, y=d.white[mask], mode="lines", name=f"{detector_name} whitened", line=dict(width=1.0, color=BLUE)))
         rel_abs = {k:(a-event_t,b-event_t) for k,(a,b) in real.phase_intervals_absolute.items()}
         add_phase_regions(fig_real, rel_abs)
         fig_real.add_vline(x=0, line_dash="dash", line_color=GOLD)
@@ -406,9 +546,11 @@ elif page == "Waveform Morphology":
 
         # Spectrogram + reference template ridge.
         fmask = d.stft_freq <= min(spec.fband[1], 900)
-        tmask = (d.stft_time >= lo) & (d.stft_time <= hi)
+        tmask = display_mask(d.stft_time, event_t, max(spec.display_half_width_s, 0.35))
         db = power_to_db(d.stft_power, floor_db=-75)
-        heat = go.Figure(go.Heatmap(x=d.stft_time[tmask]-event_t, y=d.stft_freq[fmask], z=db[fmask][:, tmask], colorscale="Cividis", zmin=-75, zmax=0, colorbar=dict(title="dB rel.")))
+        shown_db = db[fmask][:, tmask]
+        zlo, zhi = spectrogram_limits(shown_db, floor_db=-75)
+        heat = go.Figure(go.Heatmap(x=d.stft_time[tmask]-event_t, y=d.stft_freq[fmask], z=shown_db, colorscale="Cividis", zmin=zlo, zmax=zhi, colorbar=dict(title="dB rel.")))
         fi = instantaneous_frequency(tr)
         ridge_mask = np.isfinite(fi) & (tt >= stage_min) & (tt <= stage_max) & (fi >= spec.fband[0]) & (fi <= min(spec.fband[1], 900))
         heat.add_trace(go.Scatter(x=tt[ridge_mask], y=fi[ridge_mask], mode="lines", name="reference chirp ridge", line=dict(color=CREAM, width=2.2)))
@@ -418,6 +560,7 @@ elif page == "Waveform Morphology":
         heat.update_xaxes(title="Time relative to merger (s)"); heat.update_yaxes(title="Frequency (Hz)")
         st.plotly_chart(style_figure(heat, height=540, title="Real spectrogram + expected chirp track"), use_container_width=True)
         st.caption("The cream ridge comes from the public reference template and is overlaid to make the expected inspiral trajectory explicit. The heatmap itself comes from the real detector data.")
+        display_note()
 
 
 # ───────────────────────────── Event Timeline ─────────────────────────────
@@ -476,8 +619,11 @@ elif page == "Detector Strain":
     hero("DETECTOR DATA", "Strain and Fourier spectrum", "Calibrated detector strain in the time domain with its one-sided Fourier magnitude spectrum.")
     if real is not None:
         d = real.h1 if detector_name == "H1" else real.l1
-        stride = max(1, d.record.n // 30000)
-        fig = line_figure(d.record.time[::stride], [d.raw[::stride]], [f"{detector_name} raw strain"], title="Real calibrated strain", y_label="Strain")
+        tmask = display_mask(d.record.time, event_t if spec.expected_signal else None, max(spec.display_half_width_s, 0.5))
+        shown_t = d.record.time[tmask]
+        shown_y = d.raw[tmask]
+        stride = max(1, shown_t.size // 30000)
+        fig = line_figure(shown_t[::stride], [shown_y[::stride]], [f"{detector_name} raw strain"], title="Real calibrated strain", y_label="Strain")
         if event_t is not None:
             fig.add_vline(x=event_t, line_dash="dash", line_color=GOLD, annotation_text="GWOSC reference")
         st.plotly_chart(fig, use_container_width=True)
@@ -490,6 +636,7 @@ elif page == "Detector Strain":
         specfig.update_yaxes(title="|X(f)|", type="log")
         st.plotly_chart(style_figure(specfig, height=430, title="One-sided FFT magnitude"), use_container_width=True)
         st.caption(f"N={d.record.n:,} • fs={fs:.0f} Hz • Δf={fs/d.record.n:.4f} Hz • Nyquist={fs/2:.0f} Hz")
+        display_note()
     else:
         f, X = rfft_spectrum(base["data"], fs)
         st.plotly_chart(line_figure(time, [base["data"]], ["Synthetic strain"], title="Synthetic signal"), use_container_width=True)
@@ -522,11 +669,11 @@ elif page == "Signal Conditioning":
     hero("SIGNAL CONDITIONING", "Filtering and whitening", "Zero-phase filtering defines the analysis band for visualization; PSD-based whitening equalizes frequency-dependent detector noise.")
     if real is not None:
         d = real.h1 if detector_name == "H1" else real.l1
-        if event_t is not None:
-            lo, hi = event_t - max(1.0, spec.display_half_width_s), event_t + max(1.0, spec.display_half_width_s)
-        else:
-            lo, hi = 0, min(d.record.duration, 5)
-        m = (d.record.time >= lo) & (d.record.time <= hi)
+        m = display_mask(
+            d.record.time,
+            event_t if spec.expected_signal else None,
+            max(1.0, spec.display_half_width_s),
+        )
         st.plotly_chart(line_figure(d.record.time[m], [d.raw[m], d.filtered[m], d.white[m]], ["Raw", "Filtered", "Whitened"], title="Before / after in time domain", y_label="Amplitude", height=430), use_container_width=True)
         nper = min(2048, d.raw.size)
         fr, pr = welch_psd(d.raw, fs, nperseg=nper, noverlap=nper//2)
@@ -538,6 +685,7 @@ elif page == "Signal Conditioning":
         fig.update_xaxes(title="Frequency (Hz)", type="log", range=[np.log10(10),np.log10(min(1000,fs/2))]); fig.update_yaxes(title="PSD",type="log")
         st.plotly_chart(style_figure(fig, height=470, title="PSD before / after"), use_container_width=True)
         st.caption(f"Case settings: band-pass {spec.fband[0]:.0f}–{spec.fband[1]:.0f} Hz; notches {', '.join(str(int(x)) for x in spec.notches_hz)} Hz when inside Nyquist.")
+        display_note()
     else:
         st.plotly_chart(line_figure(time, [base["data"], base["filtered"], base["white"]], ["Raw","Filtered","Whitened"], title="Synthetic preprocessing"), use_container_width=True)
 
@@ -549,18 +697,20 @@ elif page == "Time–Frequency Analysis":
         d = real.h1 if detector_name == "H1" else real.l1
         db = power_to_db(d.stft_power, floor_db=-75)
         fm = d.stft_freq <= min(spec.fband[1], 900)
-        if event_t is not None:
-            lo, hi = event_t - 2.0, event_t + 1.0
-            tm = (d.stft_time >= lo) & (d.stft_time <= hi)
+        if DISPLAY_MODE == "Auto focus" and event_t is not None:
+            tm = (d.stft_time >= event_t - 2.0) & (d.stft_time <= event_t + 1.0)
         else:
             tm = np.ones_like(d.stft_time, dtype=bool)
-        heat = go.Figure(go.Heatmap(x=d.stft_time[tm], y=d.stft_freq[fm], z=db[fm][:, tm], colorscale="Cividis", zmin=-75,zmax=0,colorbar=dict(title="dB rel.")))
+        shown_db = db[fm][:, tm]
+        zlo, zhi = spectrogram_limits(shown_db, floor_db=-75)
+        heat = go.Figure(go.Heatmap(x=d.stft_time[tm], y=d.stft_freq[fm], z=shown_db, colorscale="Cividis", zmin=zlo,zmax=zhi,colorbar=dict(title="dB rel.")))
         if event_t is not None:
             heat.add_vline(x=event_t, line_dash="dash", line_color=GOLD, annotation_text="merger")
         heat.update_xaxes(title="Time (s)"); heat.update_yaxes(title="Frequency (Hz)")
         st.plotly_chart(style_figure(heat, height=560, title=f"{detector_name} whitened spectrogram"), use_container_width=True)
         if event_t is not None:
             st.caption("The GWOSC event time is shown as an external reference marker; the heatmap itself is computed from the selected detector strain.")
+        display_note()
     else:
         db = power_to_db(base["spectrogram_power"], floor_db=-70); fm=base["stft_freq"]<=320
         heat=go.Figure(go.Heatmap(x=base["stft_time"],y=base["stft_freq"][fm],z=db[fm],colorscale="Cividis",zmin=-70,zmax=0)); heat.update_xaxes(title="Time (s)");heat.update_yaxes(title="Frequency (Hz)")
@@ -584,7 +734,7 @@ elif page == "Event Detection":
             cards([
                 ("GravityHunter result", detector_status, f"candidate threshold {threshold:.2f}"),
                 ("Peak SNR", f"{dd.peak_snr:.2f}", f"{detector_name} two-quadrature match"),
-                ("Our candidate time", f"{dd.peak_time_s:.4f} s" if dd.peak_time_s is not None else "—", f"GWOSC reference {event_t:.4f} s"),
+                ("Candidate time", f"{dd.peak_time_s:.4f} s" if dd.peak_time_s is not None else "—", f"GWOSC reference {event_t:.4f} s"),
                 ("Candidate − reference", f"{timing_err*1000:+.1f} ms" if timing_err is not None else "—", "validation only; the reference is not used to choose the record-wide peak"),
             ])
             if not recovered_here:
@@ -595,18 +745,25 @@ elif page == "Event Detection":
                 ("Candidate", "YES" if dd.detected else "NO", f"threshold {threshold:.2f}"),
                 ("Peak SNR", f"{dd.peak_snr:.2f}", "a crossing here is a false alarm"),
             ])
-        fig = go.Figure(go.Scatter(x=candidate_t[valid], y=d.snr[valid], mode="lines", name="SNR", line=dict(width=1.25)))
+        plot_t = candidate_t[valid]
+        plot_snr = d.snr[valid]
+        if plot_t.size > 30000:
+            idx = np.linspace(0, plot_t.size - 1, 30000).astype(int)
+            plot_t, plot_snr = plot_t[idx], plot_snr[idx]
+        fig = go.Figure(go.Scatter(x=plot_t, y=plot_snr, mode="lines", name="SNR", line=dict(width=1.25, color=GREEN)))
         fig.add_hline(y=threshold, line_dash="dash", line_color=CREAM_DIM, annotation_text="threshold")
         if event_t is not None:
             fig.add_vline(x=event_t,line_dash="dot",line_color=GOLD,annotation_text="GWOSC reference")
         if dd.peak_time_s is not None:
             fig.add_vline(x=dd.peak_time_s,line_dash="dash",line_color=CREAM,annotation_text="candidate")
-        if event_t is not None:
-            fig.update_xaxes(title="Candidate time (s)",range=[max(0,event_t-3),min(d.record.duration,event_t+3)])
+        focus_center = event_t if event_t is not None else dd.peak_time_s
+        if DISPLAY_MODE == "Auto focus" and focus_center is not None:
+            fig.update_xaxes(title="Candidate time (s)", range=[max(0, focus_center-3), min(d.record.duration, focus_center+3)])
         else:
             fig.update_xaxes(title="Candidate time (s)")
         fig.update_yaxes(title="Matched-filter SNR")
         st.plotly_chart(style_figure(fig,height=500,title=f"{detector_name} template-match score"),use_container_width=True)
+        display_note()
         with st.expander("Matched-filter definition"):
             st.latex(r"z(t)\propto\mathcal{F}^{-1}\left\{\frac{X(f)S^*(f)}{S_n(f)}\right\}")
             st.write("The plus/cross template basis is combined using its measured noise-weighted overlap, so the two response channels are not assumed to be exactly orthogonal.")
@@ -634,17 +791,17 @@ elif page == "Detector Coincidence":
         if signed_candidate_ms is not None:
             st.caption(f"Matched-filter trigger difference H1 − L1: {signed_candidate_ms:+.3f} ms. Cross-correlation uses the same sign convention.")
         if spec.expected_signal and event_t is not None:
-            lo,hi=event_t-0.22,event_t+0.22
-            mh=(real.h1.record.time>=lo)&(real.h1.record.time<=hi)
-            ml=(real.l1.record.time>=lo)&(real.l1.record.time<=hi)
-            fig=line_figure(real.h1.record.time[mh]-event_t,[real.h1.white[mh]], ["H1"],x_label="Time from merger (s)",y_label="Whitened strain",title="H1 around merger",height=300)
+            mh = display_mask(real.h1.record.time, event_t, 0.22)
+            ml = display_mask(real.l1.record.time, event_t, 0.22)
+            fig=line_figure(real.h1.record.time[mh]-event_t,[real.h1.white[mh]], ["H1"],x_label="Time from merger (s)",y_label="Whitened strain",title="H1 detector strain",height=300)
             st.plotly_chart(fig,use_container_width=True)
-            fig2=line_figure(real.l1.record.time[ml]-event_t,[real.l1.white[ml]], ["L1"],x_label="Time from merger (s)",y_label="Whitened strain",title="L1 around merger",height=300)
+            fig2=line_figure(real.l1.record.time[ml]-event_t,[real.l1.white[ml]], ["L1"],x_label="Time from merger (s)",y_label="Whitened strain",title="L1 detector strain",height=300)
             st.plotly_chart(fig2,use_container_width=True)
             if real.network_delay:
                 lag_ms=real.network_delay.lags/fs*1000; mm=np.abs(lag_ms)<=10
                 cc=go.Figure(go.Scatter(x=lag_ms[mm],y=real.network_delay.correlation[mm],mode="lines",name="cross-correlation"));cc.add_vline(x=real.network_delay.delay_seconds*1000,line_dash="dash",line_color=GOLD);cc.update_xaxes(title="Lag (ms)");cc.update_yaxes(title="Correlation")
                 st.plotly_chart(style_figure(cc,height=390,title="H1/L1 cross-correlation"),use_container_width=True)
+            display_note()
         else:
             status_banner("NEGATIVE CONTROL", "For a quiet window, there is no known astrophysical coincidence to recover. Candidate coincidence, if it occurs, should be treated as a false alarm.", "quiet")
     else:
@@ -722,11 +879,13 @@ elif page == "Inspiral Diagnostics":
                 tm = (est.stft_time >= a) & (est.stft_time <= b)
                 fm = (est.stft_freq >= 20.0) & (est.stft_freq <= min(spec.fband[1], 600.0))
                 db = power_to_db(est.stft_power, floor_db=-75)
+                shown_db = db[fm][:, tm]
+                zlo, zhi = spectrogram_limits(shown_db, floor_db=-75)
                 heat = go.Figure(go.Heatmap(
                     x=est.stft_time[tm] - event_t,
                     y=est.stft_freq[fm],
-                    z=db[fm][:, tm],
-                    colorscale="Cividis", zmin=-75, zmax=0, colorbar=dict(title="dB rel."),
+                    z=shown_db,
+                    colorscale="Cividis", zmin=zlo, zmax=zhi, colorbar=dict(title="dB rel."),
                 ))
                 if est.ridge_time_s.size:
                     heat.add_trace(go.Scatter(
@@ -801,8 +960,8 @@ elif page == "Audio Reconstruction":
 
 
 # ───────────────────────────── Synthetic Validation ─────────────────────────────
-elif page == "Synthetic Validation":
-    hero("CONTROLLED VALIDATION", "Synthetic signal injection", "A known chirp is injected at adjustable amplitude to test recovery behavior under controlled conditions.")
+elif page == "Validation":
+    hero("VALIDATION", "Controlled signal injection", "A known synthetic chirp is injected at adjustable amplitude to verify recovery behavior independently of the catalog-event records.")
     alpha=st.slider("Synthetic injection strength α",0.0,2.0,1.0,0.05)
     syn=synthetic_data(int(seed))
     # Single-injection validation view.
