@@ -110,6 +110,13 @@ def load_losc_template(path: str | Path, fs: float = 4096.0) -> TemplateRecord:
     phase = np.unwrap(np.angle(z))
     inst_freq = np.gradient(phase) * fs / (2 * np.pi)
     before = np.arange(plus.size) <= peak
+    # Template polarization conventions can flip the sign of the complex phase.
+    # Choose the sign from the strong pre-peak waveform rather than assuming one.
+    strong_pre = before & (amp > max_amp * 1e-3) & np.isfinite(inst_freq)
+    if np.any(strong_pre):
+        med = float(np.nanmedian(inst_freq[strong_pre]))
+        if med < 0:
+            inst_freq = -inst_freq
     useful = before & (amp > max_amp * 1e-4) & (inst_freq > 20.0) & (inst_freq < fs / 2)
     idx = np.flatnonzero(useful)
     active_start = int(idx[0]) if idx.size else max(0, peak - int(1.5 * fs))
@@ -144,8 +151,13 @@ def instantaneous_frequency(template: TemplateRecord) -> np.ndarray:
     z = template.complex_template
     phase = np.unwrap(np.angle(z))
     f = np.gradient(phase) * template.fs / (2 * np.pi)
-    # Hide meaningless values where the zero-padded waveform amplitude vanishes.
     amp = np.abs(z)
+    strong = amp > np.max(amp) * 1e-3
+    if np.any(strong):
+        med = float(np.nanmedian(f[strong]))
+        if med < 0:
+            f = -f
+    # Hide meaningless values where the zero-padded waveform amplitude vanishes.
     mask = amp > np.max(amp) * 1e-4
     out = np.full_like(f, np.nan, dtype=float)
     out[mask] = f[mask]

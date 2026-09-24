@@ -37,6 +37,9 @@ class EventSpec:
     network_snr: float | None = None
     release: str | None = None
     source_url: str | None = None
+    # Known first-sample GPS of the bundled 32 s file. Used only as a
+    # metadata fallback when an HDF5 variant omits/relocates GPSstart.
+    record_gps_start: float | None = None
 
 
 def _event_path(name: str, detector: str) -> Path:
@@ -74,6 +77,7 @@ EVENTS: dict[str, EventSpec] = {
         network_snr=23.6,
         release="GWTC-1-confident / v3",
         source_url="https://gwosc.org/eventapi/html/event/GW150914/v3",
+        record_gps_start=1126259447.0,
     ),
     "GW151226": EventSpec(
         key="GW151226",
@@ -101,6 +105,7 @@ EVENTS: dict[str, EventSpec] = {
         network_snr=13.1,
         release="GWTC-1-confident / v2",
         source_url="https://gwosc.org/eventapi/html/GWTC-1-confident/GW151226/v2/",
+        record_gps_start=1135136335.0,
     ),
     "GW170104": EventSpec(
         key="GW170104",
@@ -128,6 +133,7 @@ EVENTS: dict[str, EventSpec] = {
         network_snr=13.0,
         release="GWTC-1-confident / v2",
         source_url="https://gwosc.org/eventapi/html/GWTC-1-confident/GW170104/v2/",
+        record_gps_start=1167559921.0,
     ),
     # Negative examples reuse genuine detector data but select an off-source interval.
     "QUIET150914": EventSpec(
@@ -148,6 +154,7 @@ EVENTS: dict[str, EventSpec] = {
         display_half_width_s=2.5,
         sonify_half_width_s=2.0,
         release="Off-source window from GW150914 local strain",
+        record_gps_start=1126259447.0,
     ),
     "QUIET170104": EventSpec(
         key="QUIET170104",
@@ -167,6 +174,7 @@ EVENTS: dict[str, EventSpec] = {
         display_half_width_s=2.5,
         sonify_half_width_s=2.0,
         release="Off-source window from GW170104 local strain",
+        record_gps_start=1167559921.0,
     ),
     "SYNTHETIC": EventSpec(
         key="SYNTHETIC",
