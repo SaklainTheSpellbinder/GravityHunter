@@ -15,7 +15,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import numpy as np
 
-from gravityhunter.analysis.chirp_mass import estimate_chirp_mass_from_network
+from gravityhunter.analysis.chirp_mass import estimate_chirp_mass_from_case
 from gravityhunter.analysis.real_pipeline import analyze_real_case
 from gravityhunter.catalog import get_event_spec
 from gravityhunter.dsp.psd import welch_psd
@@ -65,15 +65,7 @@ def main() -> None:
             "candidate_time_difference_ms": None if r.coincidence.absolute_time_difference_s is None else 1000.0 * r.coincidence.absolute_time_difference_s,
             "cross_correlation_delay_ms": None if r.network_delay is None else 1000.0 * r.network_delay.delay_seconds,
         }
-        cm = estimate_chirp_mass_from_network(
-            h1_white=r.h1.white,
-            l1_white=r.l1.white,
-            fs=r.h1.record.fs,
-            template=r.template,
-            event_time_s=r.event_time_s,
-            phase_intervals_absolute=r.phase_intervals_absolute,
-            spec=r.spec,
-        )
+        cm = estimate_chirp_mass_from_case(r)
         event["experimental_chirp_mass"] = {
             "success": cm.success,
             "estimate_solar_mass": cm.estimated_mass_solar,

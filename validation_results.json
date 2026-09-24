@@ -20,11 +20,11 @@
       "candidate_time_difference_ms": 6.8359375,
       "cross_correlation_delay_ms": 7.32421875,
       "experimental_chirp_mass": {
-        "success": false,
-        "estimate_solar_mass": null,
-        "fit_r2": null,
-        "ridge_points": 1,
-        "message": "Too few network ridge points survived the inspiral search corridor."
+        "success": true,
+        "estimate_solar_mass": 32.595847222231704,
+        "fit_r2": 0.997281379575209,
+        "ridge_points": 13,
+        "message": "Network ridge fit completed using combined H1/L1 relative STFT power."
       }
     },
     "GW151226": {
@@ -48,9 +48,9 @@
       "cross_correlation_delay_ms": 0.9765625,
       "experimental_chirp_mass": {
         "success": true,
-        "estimate_solar_mass": 11.973230324195958,
-        "fit_r2": 0.9701005780423555,
-        "ridge_points": 10,
+        "estimate_solar_mass": 8.12707814552141,
+        "fit_r2": 0.6617131539758794,
+        "ridge_points": 88,
         "message": "Network ridge fit completed using combined H1/L1 relative STFT power."
       }
     },
@@ -74,11 +74,11 @@
       "candidate_time_difference_ms": 2.685546875,
       "cross_correlation_delay_ms": -3.173828125,
       "experimental_chirp_mass": {
-        "success": false,
-        "estimate_solar_mass": null,
-        "fit_r2": null,
-        "ridge_points": 3,
-        "message": "Too few network ridge points survived the inspiral search corridor."
+        "success": true,
+        "estimate_solar_mass": 23.475003526810013,
+        "fit_r2": 0.9217886239266231,
+        "ridge_points": 20,
+        "message": "Network ridge fit completed using combined H1/L1 relative STFT power."
       }
     }
   },

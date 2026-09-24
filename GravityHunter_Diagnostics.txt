@@ -1,0 +1,423 @@
+
+============================================================
+GRAVITYHUNTER COMPLETE DIAGNOSTIC REPORT
+Generated: 09/24/2026 11:47:39
+============================================================
+
+
+============================================================
+1. PYTHON INFORMATION
+============================================================
+Python 3.13.1
+Executable: D:\GravityHunter\.venv\Scripts\python.exe
+Version: 3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]
+
+
+============================================================
+2. IMPORTANT PACKAGE VERSIONS
+============================================================
+numpy: 2.5.3
+scipy: 1.18.1
+h5py: 3.16.0
+plotly: 7.0.0
+streamlit: 1.63.0
+pytest: 9.1.1
+
+
+============================================================
+3. PYRIGHT / TYPE CHECKING
+============================================================
+d:\GravityHunter\gravityhunter\analysis\chirp_mass.py
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:108:16 - error: No overloads for "gradient" match the provided arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:108:28 - error: Argument of type "Array | _Array1D[float64] | ndarray[tuple[int], dtype[Any]] | ndarray[Unknown, Unknown] | ndarray[_AnyShape, dtype[Any]]" cannot be assigned to parameter "f" of type "ArrayLike" in function "gradient"
+  ┬á┬áType "Array | _Array1D[float64] | ndarray[tuple[int], dtype[Any]] | ndarray[Unknown, Unknown] | ndarray[_AnyShape, dtype[Any]]" is not assignable to type "ArrayLike"
+  ┬á┬á┬á┬áType "Array" is not assignable to type "ArrayLike"
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "_SupportsArray[dtype[Any]]"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__array__" is not present
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "_NestedSequence[_SupportsArray[dtype[Any]]]"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__len__" is not present
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:112:36 - error: Argument of type "Array | _Array1D[float64] | ndarray[tuple[int], dtype[Any]] | ndarray[Unknown, Unknown] | ndarray[_AnyShape, dtype[Any]]" cannot be assigned to parameter "array" of type "ArrayLike" in function "accumulate"
+  ┬á┬áType "Array | _Array1D[float64] | ndarray[tuple[int], dtype[Any]] | ndarray[Unknown, Unknown] | ndarray[_AnyShape, dtype[Any]]" is not assignable to type "ArrayLike"
+  ┬á┬á┬á┬áType "Array" is not assignable to type "ArrayLike"
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "_SupportsArray[dtype[Any]]"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__array__" is not present
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "_NestedSequence[_SupportsArray[dtype[Any]]]"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__len__" is not present
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:207:36 - error: Argument of type "Array | _Array1D[float64] | ndarray[tuple[int], dtype[Any]] | ndarray[Unknown, Unknown] | ndarray[_AnyShape, dtype[Any]]" cannot be assigned to parameter "array" of type "ArrayLike" in function "accumulate"
+  ┬á┬áType "Array | _Array1D[float64] | ndarray[tuple[int], dtype[Any]] | ndarray[Unknown, Unknown] | ndarray[_AnyShape, dtype[Any]]" is not assignable to type "ArrayLike"
+  ┬á┬á┬á┬áType "Array" is not assignable to type "ArrayLike"
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "_SupportsArray[dtype[Any]]"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__array__" is not present
+  ┬á┬á┬á┬á┬á┬á"Array" is incompatible with protocol "_NestedSequence[_SupportsArray[dtype[Any]]]"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__len__" is not present
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:255:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:255:19 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:255:38 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:255:62 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:255:68 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:256:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:256:27 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:256:41 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:256:59 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:279:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:279:19 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:279:38 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:279:62 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:279:68 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:280:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:280:21 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:280:29 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:280:36 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:296:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:296:19 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:296:38 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:296:62 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:296:68 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:297:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:297:21 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:297:29 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:297:36 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:407:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:407:19 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:407:38 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:407:62 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:407:68 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:408:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:408:27 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:408:41 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:408:59 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:424:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:424:19 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:424:38 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:424:62 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:424:68 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:425:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:425:17 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:425:21 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:425:39 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:446:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:446:19 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:446:38 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:446:62 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:446:68 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:447:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:447:21 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:447:29 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:447:36 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:461:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:461:19 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:461:38 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:461:62 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:461:68 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:462:13 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:462:21 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:462:29 - error: Expected 18 positional arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\analysis\chirp_mass.py:462:36 - error: Expected 18 positional arguments (reportCallIssue)
+d:\GravityHunter\gravityhunter\dsp\filters.py
+  d:\GravityHunter\gravityhunter\dsp\filters.py:24:12 - error: Type "tuple[Any | Array | Unknown, Unknown | Array | Any, Unknown] | tuple[Any | Array, Array] | Any | None" is not assignable to return type "ndarray[_AnyShape, dtype[Any]]"
+  ┬á┬áType "tuple[Any | Array | Unknown, Unknown | Array | Any, Unknown] | tuple[Any | Array, Array] | Any | None" is not assignable to type "ndarray[_AnyShape, dtype[Any]]"
+  ┬á┬á┬á┬á"tuple[Any | Array | Unknown, Unknown | Array | Any, Unknown]" is not assignable to "ndarray[_AnyShape, dtype[Any]]" (reportReturnType)
+  d:\GravityHunter\gravityhunter\dsp\filters.py:105:12 - error: Type "tuple[Unknown | Any | Array, float | Unknown | Any]" is not assignable to return type "tuple[ndarray[_AnyShape, dtype[Any]], ndarray[_AnyShape, dtype[Any]]]"
+  ┬á┬áType "Unknown | Any | Array" is not assignable to type "ndarray[_AnyShape, dtype[Any]]"
+  ┬á┬á┬á┬á"Array" is not assignable to "ndarray[_AnyShape, dtype[Any]]"
+  ┬á┬áType "float | Unknown | Any" is not assignable to type "ndarray[_AnyShape, dtype[Any]]"
+  ┬á┬á┬á┬á"float" is not assignable to "ndarray[_AnyShape, dtype[Any]]" (reportReturnType)
+  d:\GravityHunter\gravityhunter\dsp\filters.py:115:21 - error: Argument of type "ndarray[_AnyShape, dtype[Any]]" cannot be assigned to parameter "a" of type "int" in function "freqz"
+  ┬á┬á"ndarray[_AnyShape, dtype[Any]]" is not assignable to "int" (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\filters.py:116:12 - error: Type "tuple[Unknown | Any | Array, Unknown | Any]" is not assignable to return type "tuple[ndarray[_AnyShape, dtype[Any]], ndarray[_AnyShape, dtype[Any]]]"
+  ┬á┬áType "Unknown | Any | Array" is not assignable to type "ndarray[_AnyShape, dtype[Any]]"
+  ┬á┬á┬á┬á"Array" is not assignable to "ndarray[_AnyShape, dtype[Any]]" (reportReturnType)
+d:\GravityHunter\gravityhunter\dsp\loader.py
+  d:\GravityHunter\gravityhunter\dsp\loader.py:53:17 - error: "__getitem__" method not defined on type "Datatype" (reportIndexIssue)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:99:29 - error: "__getitem__" method not defined on type "Datatype" (reportIndexIssue)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:121:29 - error: "__getitem__" method not defined on type "Datatype" (reportIndexIssue)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:124:24 - error: Argument of type "Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | _Array1D[float64]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | _Array1D[float64]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex"
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:124:24 - error: Argument of type "Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | _Array1D[float64]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | _Array1D[float64]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex" (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:131:46 - error: Argument of type "Group | Dataset | Datatype" cannot be assigned to parameter "group" of type "Group" in function "_scalar_value"
+  ┬á┬áType "Group | Dataset | Datatype" is not assignable to type "Group"
+  ┬á┬á┬á┬á"Dataset" is not assignable to "Group" (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:142:31 - error: Argument of type "Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | _Array1D[float64]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | _Array1D[float64]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex"
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:142:31 - error: Argument of type "Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | _Array1D[float64]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | _Array1D[float64]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex" (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:149:43 - error: Argument of type "Group | Dataset | Datatype" cannot be assigned to parameter "group" of type "Group" in function "_scalar_value"
+  ┬á┬áType "Group | Dataset | Datatype" is not assignable to type "Group"
+  ┬á┬á┬á┬á"Dataset" is not assignable to "Group" (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\loader.py:152:51 - error: Argument of type "Group | Dataset | Datatype" cannot be assigned to parameter "group" of type "Group" in function "_scalar_value"
+  ┬á┬áType "Group | Dataset | Datatype" is not assignable to type "Group"
+  ┬á┬á┬á┬á"Dataset" is not assignable to "Group" (reportArgumentType)
+d:\GravityHunter\gravityhunter\dsp\psd.py
+  d:\GravityHunter\gravityhunter\dsp\psd.py:40:13 - error: No overloads for "rfft" match the provided arguments (reportCallIssue)
+  d:\GravityHunter\gravityhunter\dsp\psd.py:40:25 - error: Argument of type "Any | Unknown | NDArray[float64] | NDArray[complexfloating[Any, Any]]" cannot be assigned to parameter "a" of type "_ArrayLikeFloat_co" in function "rfft"
+  ┬á┬áType "Any | Unknown | NDArray[float64] | NDArray[complexfloating[Any, Any]]" is not assignable to type "_ArrayLikeFloat_co"
+  ┬á┬á┬á┬áType "NDArray[complexfloating[Any, Any]]" is not assignable to type "_ArrayLikeFloat_co"
+  ┬á┬á┬á┬á┬á┬á"ndarray[_AnyShape, dtype[complexfloating[Any, Any]]]" is incompatible with protocol "_SupportsArray[dtype[numpy.bool[builtins.bool] | integer[Any] | floating[Any]]]"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__array__" is an incompatible type
+  ┬á┬á┬á┬á┬á┬á┬á┬á┬á┬áNo overloaded function matches type "() -> ndarray[Any, DTypeT@_SupportsArray]"
+  ┬á┬á┬á┬á┬á┬á"ndarray[_AnyShape, dtype[complexfloating[Any, Any]]]" is incompatible with protocol "_NestedSequence[_SupportsArray[dtype[numpy.bool[builtins.bool] | integer[Any] | floating[Any]]]]"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__reversed__" is not present
+  ┬á┬á┬á┬á┬á┬á┬á┬á"count" is not present
+    ... (reportArgumentType)
+d:\GravityHunter\gravityhunter\dsp\stft_tools.py
+  d:\GravityHunter\gravityhunter\dsp\stft_tools.py:67:18 - error: Argument of type "None" cannot be assigned to parameter "boundary" of type "str" in function "stft"
+  ┬á┬á"None" is not assignable to "str" (reportArgumentType)
+d:\GravityHunter\gravityhunter\dsp\templates.py
+  d:\GravityHunter\gravityhunter\dsp\templates.py:110:31 - error: "__getitem__" method not defined on type "Datatype" (reportIndexIssue)
+  d:\GravityHunter\gravityhunter\dsp\templates.py:161:42 - error: Argument of type "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex"
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\templates.py:161:42 - error: Argument of type "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex" (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\templates.py:162:42 - error: Argument of type "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex"
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\templates.py:162:42 - error: Argument of type "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex" (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\templates.py:163:42 - error: Argument of type "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex"
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\templates.py:163:42 - error: Argument of type "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex" (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\templates.py:164:42 - error: Argument of type "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex"
+    ... (reportArgumentType)
+  d:\GravityHunter\gravityhunter\dsp\templates.py:164:42 - error: Argument of type "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" cannot be assigned to parameter "x" of type "ConvertibleToFloat" in function "__new__"
+  ┬á┬áType "str | float | Unknown | Empty | ndarray[_AnyShape, dtype[Unknown]] | ndarray[_AnyShape, dtype[float64]] | ndarray[tuple[int], dtype[Unknown]] | ndarray[tuple[int], dtype[float64]]" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬áType "Empty" is not assignable to type "ConvertibleToFloat"
+  ┬á┬á┬á┬á┬á┬á"Empty" is not assignable to "str"
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "Buffer"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__buffer__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsFloat"
+  ┬á┬á┬á┬á┬á┬á┬á┬á"__float__" is not present
+  ┬á┬á┬á┬á┬á┬á"Empty" is incompatible with protocol "SupportsIndex" (reportArgumentType)
+d:\GravityHunter\scripts\validate_bundled_data.py
+  d:\GravityHunter\scripts\validate_bundled_data.py:54:77 - error: Operator "+" not supported for "None" (reportOptionalOperand)
+  d:\GravityHunter\scripts\validate_bundled_data.py:61:77 - error: Operator "+" not supported for "None" (reportOptionalOperand)
+  d:\GravityHunter\scripts\validate_bundled_data.py:73:26 - error: Argument of type "float | None" cannot be assigned to parameter "event_time_s" of type "float" in function "estimate_chirp_mass_from_network"
+  ┬á┬áType "float | None" is not assignable to type "float"
+  ┬á┬á┬á┬á"None" is not assignable to "float" (reportArgumentType)
+  d:\GravityHunter\scripts\validate_bundled_data.py:84:9 - error: "__setitem__" method not defined on type "object" (reportIndexIssue)
+  d:\GravityHunter\scripts\validate_bundled_data.py:88:9 - error: "__setitem__" method not defined on type "object" (reportIndexIssue)
+d:\GravityHunter\streamlit_app.py
+  d:\GravityHunter\streamlit_app.py:295:16 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:296:12 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:297:21 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:324:48 - error: "det" is possibly unbound (reportPossiblyUnboundVariable)
+  d:\GravityHunter\streamlit_app.py:334:31 - error: "det" is possibly unbound (reportPossiblyUnboundVariable)
+  d:\GravityHunter\streamlit_app.py:336:40 - error: "det" is possibly unbound (reportPossiblyUnboundVariable)
+  d:\GravityHunter\streamlit_app.py:336:55 - error: "det" is possibly unbound (reportPossiblyUnboundVariable)
+  d:\GravityHunter\streamlit_app.py:342:35 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:342:48 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:355:40 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:387:160 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:387:186 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:392:25 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" when expected type is "float | Unknown" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:393:25 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" when expected type is "float | Unknown" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:397:27 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:397:38 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:406:18 - error: Operator "-" not supported for "None" (reportOptionalOperand)
+  d:\GravityHunter\streamlit_app.py:406:55 - error: Operator "+" not supported for "None" (reportOptionalOperand)
+  d:\GravityHunter\streamlit_app.py:409:23 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:409:33 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:502:30 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:503:44 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:523:13 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:523:60 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:524:38 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:550:44 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:550:58 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:550:76 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:573:26 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:573:71 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:574:37 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:574:57 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:589:62 - error: Operator "-" not supported for types "float" and "float | None"
+  ┬á┬áOperator "-" not supported for types "float" and "None" (reportOperatorIssue)
+  d:\GravityHunter\streamlit_app.py:622:34 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:622:46 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:622:102 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:623:48 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+  d:\GravityHunter\streamlit_app.py:668:28 - error: Argument of type "float | None" cannot be assigned to parameter "m1" of type "float" in function "chirp_mass"
+  ┬á┬áType "float | None" is not assignable to type "float"
+  ┬á┬á┬á┬á"None" is not assignable to "float" (reportArgumentType)
+  d:\GravityHunter\streamlit_app.py:668:43 - error: Argument of type "float | None" cannot be assigned to parameter "m2" of type "float" in function "chirp_mass"
+  ┬á┬áType "float | None" is not assignable to type "float"
+  ┬á┬á┬á┬á"None" is not assignable to "float" (reportArgumentType)
+  d:\GravityHunter\streamlit_app.py:708:27 - error: Operator "-" not supported for "None" (reportOptionalOperand)
+  d:\GravityHunter\streamlit_app.py:716:77 - error: Operator "-" not supported for "None" (reportOptionalOperand)
+  d:\GravityHunter\streamlit_app.py:808:55 - error: Object of type "None" is not subscriptable (reportOptionalSubscript)
+d:\GravityHunter\tests\test_real_pipeline.py
+  d:\GravityHunter\tests\test_real_pipeline.py:100:16 - error: Operator "-" not supported for "None" (reportOptionalOperand)
+  d:\GravityHunter\tests\test_real_pipeline.py:101:16 - error: Operator "-" not supported for "None" (reportOptionalOperand)
+  d:\GravityHunter\tests\test_real_pipeline.py:121:22 - error: Argument of type "float | None" cannot be assigned to parameter "event_time_s" of type "float" in function "estimate_chirp_mass_from_detector"
+  ┬á┬áType "float | None" is not assignable to type "float"
+  ┬á┬á┬á┬á"None" is not assignable to "float" (reportArgumentType)
+143 errors, 0 warnings, 0 informations
+
+
+============================================================
+4. PYTHON COMPILE CHECK
+============================================================
+Listing 'gravityhunter'...
+Listing 'gravityhunter\\analysis'...
+Compiling 'gravityhunter\\analysis\\injections.py'...
+Listing 'gravityhunter\\dsp'...
+Listing 'gravityhunter\\ui'...
+Listing 'tests'...
+Compiling 'tests\\test_bundled_real_data.py'...
+Compiling 'tests\\test_core.py'...
+Compiling 'tests\\test_real_pipeline.py'...
+Listing 'scripts'...
+Compiling 'scripts\\validate_bundled_data.py'...
+Listing 'examples'...
+Compiling 'examples\\real_data_workflow.py'...
+Compiling 'streamlit_app.py'...
+
+
+============================================================
+5. PYTEST FULL TEST SUITE
+============================================================
+============================= test session starts =============================
+platform win32 -- Python 3.13.1, pytest-9.1.1, pluggy-1.6.0 -- D:\GravityHunter\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\GravityHunter
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1
+collecting ... collected 18 items
+
+tests/test_bundled_real_data.py::test_real_event_recovery[GW150914-h1_snr_range0-l1_snr_range0-h1_ref_offset_ms0-l1_ref_offset_ms0-delay_range_ms0] PASSED [  5%]
+tests/test_bundled_real_data.py::test_real_event_recovery[GW151226-h1_snr_range1-l1_snr_range1-h1_ref_offset_ms1-l1_ref_offset_ms1-delay_range_ms1] PASSED [ 11%]
+tests/test_bundled_real_data.py::test_real_event_recovery[GW170104-h1_snr_range2-l1_snr_range2-h1_ref_offset_ms2-l1_ref_offset_ms2-delay_range_ms2] PASSED [ 16%]
+tests/test_bundled_real_data.py::test_bundled_quiet_controls_stay_below_default_threshold PASSED [ 22%]
+tests/test_bundled_real_data.py::test_whitening_flattens_real_detector_noise_without_nan PASSED [ 27%]
+tests/test_core.py::test_manual_dft_matches_numpy PASSED                 [ 33%]
+tests/test_core.py::test_fft_correlation_matches_direct PASSED           [ 38%]
+tests/test_core.py::test_confusion_metrics PASSED                        [ 44%]
+tests/test_core.py::test_manual_welch_matches_scipy_density_scaling PASSED [ 50%]
+tests/test_core.py::test_whitening_returns_finite_standardized_signal PASSED [ 55%]
+tests/test_core.py::test_two_basis_snr_accounts_for_nonorthogonal_templates PASSED [ 61%]
+tests/test_core.py::test_matched_filter_peak_matches_template_norm_for_exact_injection PASSED [ 66%]
+tests/test_core.py::test_network_delay_sign_convention PASSED            [ 72%]
+tests/test_real_pipeline.py::test_real_pipeline_end_to_end_on_gwosc_shaped_hdf5 PASSED [ 77%]
+tests/test_real_pipeline.py::test_template_and_audio_helpers PASSED      [ 83%]
+tests/test_real_pipeline.py::test_chirp_mass_formula PASSED              [ 88%]
+tests/test_real_pipeline.py::test_chirp_mass_ridge_math_recovers_known_mass PASSED [ 94%]
+tests/test_real_pipeline.py::test_loader_reads_gpsstart_dataset_layout PASSED [100%]
+
+============================= 18 passed in 14.13s =============================
+
+
+============================================================
+6. GIT STATUS
+============================================================
+?? GravityHunter_Diagnostics.txt
+?? collect_diagnostics.ps1
+
+
+============================================================
+7. GIT DIFF SUMMARY
+============================================================
+
+
+============================================================
+END OF REPORT
+============================================================

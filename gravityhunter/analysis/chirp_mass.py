@@ -8,10 +8,12 @@ from scipy.signal import savgol_filter
 from gravityhunter.catalog import EventSpec
 from gravityhunter.dsp.stft_tools import scipy_stft, spectrogram_power
 from gravityhunter.dsp.templates import TemplateRecord, instantaneous_frequency
+from gravityhunter.dsp.whitening import whiten
 
 G_SI = 6.67430e-11
 C_SI = 299_792_458.0
 M_SUN_KG = 1.98847e30
+DEFAULT_CHIRP_FMIN_HZ = 25.0
 
 
 @dataclass
@@ -211,20 +213,38 @@ def estimate_chirp_mass_from_ridge(
 
 
 def _dedicated_stft_params(fs: float, inspiral_duration_s: float, n_samples: int) -> tuple[int, int]:
-    if inspiral_duration_s <= 0.45:
-        target = 512
-    elif inspiral_duration_s <= 1.5:
-        target = 1024
-    else:
-        target = 2048
+    """Choose a ridge-tracking STFT window from the *usable in-band* chirp duration.
+
+    Short, high-mass chirps need better time resolution, while longer inspirals can
+    afford a longer window for better frequency resolution.  We intentionally cap
+    the ridge-tracking window at 1024 samples because a 2048-sample (0.5 s at
+    4096 Hz) window smears the rapidly evolving late inspiral too strongly.
+    """
+    target = 512 if inspiral_duration_s <= 0.75 else 1024
     nperseg = min(target, n_samples)
-    # Keep power-of-two where practical.
     if nperseg >= 256:
         nperseg = 2 ** int(np.floor(np.log2(nperseg)))
     nperseg = max(128, nperseg)
     noverlap = int(round(0.875 * nperseg))
     noverlap = min(noverlap, nperseg - 1)
     return nperseg, noverlap
+
+
+def _reference_support_duration(
+    template: TemplateRecord,
+    *,
+    low_hz: float,
+    high_hz: float,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, float]:
+    """Return template frequency support used only to guide ridge extraction."""
+    tf = template.time_from_reference
+    ref_f = instantaneous_frequency(template)
+    good_ref = np.isfinite(ref_f) & (ref_f >= low_hz) & (ref_f <= high_hz)
+    if np.sum(good_ref) < 4:
+        return tf, ref_f, good_ref, 0.0
+    support_t = tf[good_ref]
+    support_duration = float(np.max(support_t) - np.min(support_t))
+    return tf, ref_f, good_ref, support_duration
 
 
 def estimate_chirp_mass_from_detector(
@@ -386,6 +406,7 @@ def estimate_chirp_mass_from_network(
     event_time_s: float,
     phase_intervals_absolute: dict[str, tuple[float, float]],
     spec: EventSpec,
+    analysis_fmin_hz: float = DEFAULT_CHIRP_FMIN_HZ,
 ) -> ChirpMassEstimate:
     """Estimate chirp mass from a combined H1+L1 time-frequency ridge.
 
@@ -413,8 +434,20 @@ def estimate_chirp_mass_from_network(
         h1_white = np.asarray(h1_white[:n], dtype=float)
         l1_white = np.asarray(l1_white[:n], dtype=float)
 
-    duration = insp[1] - insp[0]
-    nperseg, noverlap = _dedicated_stft_params(fs, duration, len(h1_white))
+    low = max(20.0, float(analysis_fmin_hz))
+    high = min(float(spec.fband[1]), fs / 2 - 1.0, 600.0)
+    tf, ref_f, good_ref, support_duration = _reference_support_duration(
+        template, low_hz=low, high_hz=high
+    )
+    if np.sum(good_ref) < 4:
+        return ChirpMassEstimate(
+            "H1+L1", False, "Reference waveform does not provide enough inspiral-frequency support.",
+            *(np.array([], dtype=float) for _ in range(6)),
+            None, template_ref_mass, spec.chirp_mass_source, None, None,
+            np.array([]), np.array([]), np.empty((0, 0)), insp,
+        )
+
+    nperseg, noverlap = _dedicated_stft_params(fs, support_duration, len(h1_white))
     f1, t1, Z1 = scipy_stft(h1_white, fs, nperseg=nperseg, noverlap=noverlap, window="hann")
     f2, t2, Z2 = scipy_stft(l1_white, fs, nperseg=nperseg, noverlap=noverlap, window="hann")
     if not np.allclose(f1, f2) or not np.allclose(t1, t2):
@@ -436,8 +469,6 @@ def estimate_chirp_mass_from_network(
     f_stft, t_stft = f1, t1
 
     tm = (t_stft >= insp[0]) & (t_stft <= insp[1])
-    low = max(20.0, float(spec.fband[0]))
-    high = min(float(spec.fband[1]), fs / 2 - 1.0, 600.0)
     fm = (f_stft >= low) & (f_stft <= high)
     if np.sum(tm) < 6 or np.sum(fm) < 4:
         return ChirpMassEstimate(
@@ -450,17 +481,6 @@ def estimate_chirp_mass_from_network(
     frame_times = t_stft[tm]
     band_freq = f_stft[fm]
     band_power = power[fm][:, tm]
-
-    tf = template.time_from_reference
-    ref_f = instantaneous_frequency(template)
-    good_ref = np.isfinite(ref_f) & (ref_f >= low) & (ref_f <= high)
-    if np.sum(good_ref) < 4:
-        return ChirpMassEstimate(
-            "H1+L1", False, "Reference waveform does not provide enough inspiral-frequency support.",
-            *(np.array([], dtype=float) for _ in range(6)),
-            None, template_ref_mass, spec.chirp_mass_source, None, None,
-            f_stft, t_stft, power, insp,
-        )
 
     expected = np.interp(
         frame_times - event_time_s,
@@ -546,3 +566,42 @@ def estimate_chirp_mass_from_network(
         stft_power=power,
         inspiral_interval_s=insp,
     )
+
+def estimate_chirp_mass_from_case(
+    result,
+    *,
+    analysis_fmin_hz: float = DEFAULT_CHIRP_FMIN_HZ,
+) -> ChirpMassEstimate:
+    """Run chirp-mass diagnostics with conditioning independent of detection band.
+
+    Event detection intentionally keeps its event-specific lower cutoff (43 Hz in
+    the current catalog).  Ridge inference needs more inspiral duration, especially
+    for high-mass binaries, so it whitens the *raw* H1/L1 records separately down
+    to 25 Hz by default.  This prevents the detection/display band-pass from
+    erasing the very part of the inspiral needed for a chirp-mass fit.
+    """
+    if result.event_time_s is None:
+        raise ValueError("A catalog event time is required for inspiral diagnostics")
+
+    fs = float(result.h1.record.fs)
+    high = min(float(result.spec.fband[1]), fs / 2 - 1.0, 600.0)
+    low = max(20.0, float(analysis_fmin_hz))
+    h1_white, _, _, _ = whiten(
+        result.h1.raw, fs, result.h1.psd_freq, result.h1.psd,
+        fmin=low, fmax=high, standardize=True,
+    )
+    l1_white, _, _, _ = whiten(
+        result.l1.raw, fs, result.l1.psd_freq, result.l1.psd,
+        fmin=low, fmax=high, standardize=True,
+    )
+    return estimate_chirp_mass_from_network(
+        h1_white=h1_white,
+        l1_white=l1_white,
+        fs=fs,
+        template=result.template,
+        event_time_s=float(result.event_time_s),
+        phase_intervals_absolute=result.phase_intervals_absolute,
+        spec=result.spec,
+        analysis_fmin_hz=low,
+    )
+

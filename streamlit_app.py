@@ -7,7 +7,7 @@ import streamlit.components.v1 as components
 
 from examples.synthetic_pipeline import build_demo
 from gravityhunter.analysis.real_pipeline import analyze_real_case, chirp_mass
-from gravityhunter.analysis.chirp_mass import estimate_chirp_mass_from_network
+from gravityhunter.analysis.chirp_mass import estimate_chirp_mass_from_case
 from gravityhunter.catalog import EventSpec, get_event_spec, missing_files, selectable_cases
 from gravityhunter.dsp.detector import detect_best_candidate
 from gravityhunter.dsp.fft_tools import rfft_spectrum
@@ -187,15 +187,7 @@ def chirp_mass_data(case_key: str, threshold: float):
     result = real_data(case_key, threshold)
     if result.event_time_s is None or not result.spec.expected_signal:
         return None
-    return estimate_chirp_mass_from_network(
-        h1_white=result.h1.white,
-        l1_white=result.l1.white,
-        fs=result.h1.record.fs,
-        template=result.template,
-        event_time_s=result.event_time_s,
-        phase_intervals_absolute=result.phase_intervals_absolute,
-        spec=result.spec,
-    )
+    return estimate_chirp_mass_from_case(result)
 
 
 def detection_recovered(detection, event_time_s: float | None, tol_s: float = 0.25) -> bool:
@@ -728,7 +720,7 @@ elif page == "Inspiral Diagnostics":
             if est.inspiral_interval_s is not None and est.stft_power.size:
                 a, b = est.inspiral_interval_s
                 tm = (est.stft_time >= a) & (est.stft_time <= b)
-                fm = (est.stft_freq >= spec.fband[0]) & (est.stft_freq <= min(spec.fband[1], 600.0))
+                fm = (est.stft_freq >= 20.0) & (est.stft_freq <= min(spec.fband[1], 600.0))
                 db = power_to_db(est.stft_power, floor_db=-75)
                 heat = go.Figure(go.Heatmap(
                     x=est.stft_time[tm] - event_t,

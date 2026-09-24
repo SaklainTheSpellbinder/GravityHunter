@@ -12,6 +12,7 @@ import numpy as np
 import pytest
 
 from gravityhunter.analysis.real_pipeline import analyze_real_case
+from gravityhunter.analysis.chirp_mass import estimate_chirp_mass_from_case
 from gravityhunter.catalog import get_event_spec
 from gravityhunter.dsp.psd import welch_psd
 
@@ -100,3 +101,22 @@ def test_whitening_flattens_real_detector_noise_without_nan():
             db = 10.0 * np.log10(np.maximum(p[mask], np.finfo(float).tiny))
             q10, q90 = np.percentile(db, [10, 90])
             assert q90 - q10 < 8.0
+
+def test_real_event_chirp_ridge_is_available_for_all_three_events():
+    """Regression guard for the dedicated 25 Hz inspiral-diagnostic path.
+
+    Chirp-mass inference is intentionally experimental, so the acceptance test
+    checks ridge availability and broad agreement with the tutorial-template
+    chirp mass rather than pretending to reproduce catalog parameter estimation.
+    """
+    for key in ("GW150914", "GW151226", "GW170104"):
+        result = analyze_real_case(get_event_spec(key))
+        estimate = estimate_chirp_mass_from_case(result)
+        assert estimate.success
+        assert estimate.estimated_mass_solar is not None
+        assert estimate.template_reference_mass_solar is not None
+        assert estimate.ridge_time_s.size >= 8
+        assert estimate.fit_r2 is not None and estimate.fit_r2 >= 0.5
+        rel = abs(estimate.estimated_mass_solar - estimate.template_reference_mass_solar) / estimate.template_reference_mass_solar
+        assert rel < 0.25
+
