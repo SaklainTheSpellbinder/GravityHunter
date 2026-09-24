@@ -148,7 +148,7 @@ The validation script uses no network access and writes:
 validation_results.json
 ```
 
-See [`FINAL_BACKEND_VALIDATION.md`](FINAL_BACKEND_VALIDATION.md) for the measured final results and limitations.
+
 
 ## Interpretation boundaries
 
