@@ -1,154 +1,218 @@
-# GravityHunter — Core DSP Code (Modules 1–12)
+# GravityHunter — Gravitational-Wave Signal Analysis
 
-This bundle covers the concepts learned so far:
+GravityHunter is a local gravitational-wave signal-analysis application built around public GWOSC strain data. It runs the same DSP pipeline for selected compact-binary merger records and off-source controls, with a synthetic injection case retained for regression validation.
 
-1. sampled time series / HDF5 loading
-2. DFT / FFT / frequency axes
-3. windowing and leakage
-4. Welch PSD / ASD
-5. band-pass and notch filtering
-6. PSD-based whitening
-7. STFT / spectrogram
-8. direct and FFT-based correlation
-9. PSD-weighted matched filtering
-10. SNR / peak detection
-11. H1/L1 delay and coincidence utilities
-12. waveform injections and evaluation metrics
+## What the current version does
 
-## Install
+The sidebar can select:
 
-```bash
-python -m venv .venv
+- **GW150914** — real H1 + L1 strain
+- **GW151226** — real H1 + L1 strain
+- **GW170104** — real H1 + L1 strain
+- **Quiet real data before GW150914** — negative/no-merger control
+- **Quiet real data after GW170104** — negative/no-merger control
+- **Synthetic validation chirp** — controlled algorithm test
+
+For a real event, the same backend executes:
+
+```text
+local H1/L1 HDF5
+        ↓
+strain + metadata loading
+        ↓
+off-source Welch PSD
+        ↓
+notch filtering
+        ↓
+band-pass filtering
+        ↓
+PSD whitening
+        ↓
+STFT / spectrogram
+        ↓
+public plus/cross waveform template
+        ↓
+PSD-weighted two-quadrature matched filter
+        ↓
+SNR vs time
+        ↓
+H1/L1 candidate times
+        ↓
+cross-correlation delay
+        ↓
+coincidence result
 ```
 
-Activate the environment, then:
+The quiet cases go through the **same** processing path. They are not hard-coded blank examples.
 
-```bash
-pip install -r requirements.txt
+## Analysis views
+
+### Overview
+Overall status, H1/L1 SNR summary, and selected real-data region.
+
+### Waveform Morphology
+Waveform-level morphology view:
+- public reference waveform with approximate **Inspiral → Merger → Ringdown** regions;
+- real whitened detector data in the same event neighborhood;
+- real spectrogram with the reference instantaneous-frequency ridge overlaid.
+
+The stage boundaries are visualization aids, not a full GR parameter-estimation result.
+
+### Event Timeline
+A browser-side synchronized animation for real cases:
+- plays the complete selected detector record on a master clock;
+- shows live **record time + absolute GPS time**;
+- can synchronize the collision to GravityHunter's detected time or the catalog reference time;
+- uses reference GW phase/frequency to drive the schematic orbital motion;
+- uses a Newtonian inspiral separation estimate only before merger;
+- transitions two compact bodies into one remnant and a damped ringdown visualization;
+- shows the real processed detector strain and matched-filter SNR with moving cursors;
+- supports pause, scrub, jump-to-merger, full-record playback, and 5×/20×/50× slow-motion merger replay;
+- quiet/no-event cases deliberately do **not** trigger a collision.
+
+The fabric/orbit is a schematic explanatory visualization, not a numerical GR/spacetime simulation.
+
+### Detector Strain
+Raw strain and frequency-domain content.
+
+### Spectrum & Noise
+Welch PSD / ASD used to characterize colored detector noise.
+
+### Signal Conditioning
+Before/after filtering and whitening comparisons.
+
+### Time–Frequency Analysis
+Real STFT spectrogram.
+
+### Event Detection
+Quantitative event-candidate view: PSD-weighted template match, SNR threshold, candidate time, and timing error relative to the catalog reference.
+
+### Detector Coincidence
+H1/L1 detection status, candidate-time coincidence, and cross-correlation arrival-delay estimate.
+
+### Source Parameters
+Published/reference event metadata:
+- primary black-hole mass;
+- secondary black-hole mass;
+- chirp mass;
+- final/remnant mass;
+- approximate radiated mass-energy;
+- luminosity distance;
+- sky-localization area;
+- published network SNR.
+
+GravityHunter does not infer the full astrophysical posterior. **Chirp-Mass Inference** provides one leading-order signal-derived source-parameter estimate from the inspiral frequency evolution.
+
+### Chirp-Mass Inference
+Advanced DSP inference from the selected real detector:
+
+```text
+H1/L1 whitened strain
+→ dedicated inspiral STFTs
+→ per-detector background normalization
+→ combined H1/L1 relative-power map
+→ template-guided local search corridor
+→ ridge frequencies selected from measured network STFT power
+→ smooth f(t)
+→ robust fit of t = tc − A f^(-8/3)
+→ leading-order chirp-mass estimate
 ```
 
-## Run tests
+The page shows the combined H1/L1 time-frequency power map, extracted ridge, `f(t)`, `df/dt` diagnostic, fitted chirp mass, template-reference chirp mass, and catalog source-frame chirp mass. This is a leading-order inference method, not a replacement for full Bayesian parameter estimation.
 
-From the project root:
+### Audio Reconstruction
+Audio generated from the same processed detector time series. Includes direct playback and an optional +400 Hz frequency-shifted version for easier listening.
+
+### Synthetic Validation
+Synthetic controlled experiment retained for testing the algorithm while varying signal strength.
+
+## One-time setup
+
+Create and activate a Python environment if desired, then install dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Download the configured local data once while online:
+
+```bash
+python scripts/download_demo_data.py
+```
+
+On Windows you can instead double-click:
+
+```text
+setup_data.bat
+```
+
+This creates:
+
+```text
+data/
+├── GW150914/
+│   ├── H1.hdf5
+│   └── L1.hdf5
+├── GW151226/
+│   ├── H1.hdf5
+│   └── L1.hdf5
+├── GW170104/
+│   ├── H1.hdf5
+│   └── L1.hdf5
+└── templates/
+    ├── GW150914_4_template.hdf5
+    ├── GW151226_4_template.hdf5
+    └── GW170104_4_template.hdf5
+```
+
+Once those files exist, the application runs offline.
+
+## Run
+
+```bash
+python -m streamlit run streamlit_app.py
+```
+
+or on Windows:
+
+```text
+run_local.bat
+```
+
+Then open the localhost address printed by Streamlit, normally:
+
+```text
+http://localhost:8501
+```
+
+## Tests
 
 ```bash
 pytest -q
 ```
 
-## Run the synthetic end-to-end demo
+The tests include:
+- manual DFT vs NumPy FFT;
+- direct vs FFT correlation;
+- confusion metrics;
+- an end-to-end GWOSC-shaped mock HDF5 real-data path;
+- H1/L1 injected delay recovery;
+- template loading;
+- sonification helper;
+- chirp-mass formula;
+- recovery of a known physical chirp mass from an analytic inspiral ridge;
+- animation payload/GPS synchronization generation;
+- browser animation JavaScript syntax checking during development;
+- chirp-mass real-pipeline execution on GWOSC-shaped mock HDF5.
 
-```bash
-python -m examples.synthetic_pipeline
-```
+## Important interpretation
 
-Start with this before real LIGO data. It verifies that the pipeline can find
-a known chirp injected into noisy data.
+- **Spectrogram**: visually shows time-frequency evolution; a rising ridge is the chirp/inspiral signature.
+- **Matched-filter SNR**: the local quantitative candidate statistic used by GravityHunter.
+- **Cross-correlation**: estimates relative H1/L1 lag; it is not the primary event-detection statistic.
+- **Waveform Morphology**: combines measured conditioned strain with a clearly labelled public reference template to separate observed data from reference inspiral/merger/ringdown morphology.
+- **Quiet controls**: show what happens when the same detector code is applied where no catalog merger is expected.
 
-## Real-data workflow
+GravityHunter is an independent signal-analysis prototype and is not the production LIGO/Virgo/KAGRA search or parameter-estimation pipeline.
 
-Use:
 
-```bash
-python
-```
-
-and inspect your HDF5 file first:
-
-```python
-from gravityhunter.dsp.loader import inspect_hdf5
-
-for line in inspect_hdf5("data/your_file.hdf5"):
-    print(line)
-```
-
-Then load it using the matching dataset hierarchy.
-
-The convenience `load_common_gwosc_hdf5()` assumes the common layout:
-
-```text
-/strain/Strain
-```
-
-with sample spacing metadata. If your file differs, use the generic loader.
-
-## Recommended workflow
-
-```text
-local HDF5
-    ↓
-load calibrated strain x[n]
-    ↓
-confirm fs, N, duration, time interval
-    ↓
-raw waveform
-    ↓
-FFT / frequency axis
-    ↓
-Welch PSD / ASD from a representative noise region
-    ↓
-inspect noise lines
-    ↓
-notch selected narrow lines
-    ↓
-band-pass useful analysis band
-    ↓
-whiten using the noise PSD
-    ↓
-STFT / spectrogram
-    ↓
-load or generate a compatible template
-    ↓
-PSD-weighted matched filter
-    ↓
-SNR versus lag/time
-    ↓
-peak + threshold
-    ↓
-single-detector candidate
-    ↓
-repeat independently for H1 and L1
-    ↓
-cross-correlation / candidate-time comparison
-    ↓
-relative delay
-    ↓
-coincidence
-    ↓
-multi-detector candidate
-```
-
-## Important scientific cautions
-
-- A filter is not a detector.
-- Whitening does not remove noise; it flattens frequency-dependent noise.
-- STFT is primarily a time-frequency visualization/analysis tool.
-- Matched filtering is the main single-detector detection statistic here.
-- A high single-detector SNR is not proof of an astrophysical event.
-- Thresholds should be justified empirically on event and no-event data.
-- The code is an educational detector, not the LIGO production pipeline.
-
-## Local Streamlit frontend
-
-A basic working frontend is included in `streamlit_app.py`.
-
-Run from the project root:
-
-```bash
-streamlit run streamlit_app.py
-```
-
-Then open the localhost address printed by Streamlit (normally `http://localhost:8501`).
-
-The UI uses a dark navy night-sky theme with cream star details and includes:
-
-- mission-control overview
-- waveform + FFT
-- PSD / ASD
-- filtering + whitening
-- STFT spectrogram
-- matched-filter SNR + threshold
-- synthetic H1/L1 delay + coincidence
-- signal-injection stress lab
-- real GWOSC-style HDF5 waveform/FFT/PSD preview
-
-The synthetic defaults are demonstration settings. Real detector filtering bands, line notches, thresholding, and templates should be chosen from the actual data rather than copied blindly from the synthetic example.
