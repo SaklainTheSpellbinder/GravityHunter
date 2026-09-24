@@ -37,7 +37,7 @@ Additional views provide waveform morphology, a synchronized merger timeline, ca
 | Quiet GW170104 interval | Off-source negative control |
 | Synthetic injection | Controlled algorithm validation |
 
-The final backend regression suite verifies recovery of all three real events and rejection of the two quiet controls. See [`FINAL_BACKEND_VALIDATION.md`](FINAL_BACKEND_VALIDATION.md) for measured results and limitations.
+The final backend regression suite verifies recovery of all three real events and rejection of the two quiet controls.
 
 ## Analysis views
 
@@ -84,9 +84,6 @@ data/
 
 The bundled HDF5 files are public GWOSC data/reference-waveform files used by the verified build. No runtime download is required.
 
-## Deployment
-
-See [`DEPLOYMENT.md`](DEPLOYMENT.md) for the Streamlit Community Cloud procedure.
 
 ## Scope and interpretation
 
