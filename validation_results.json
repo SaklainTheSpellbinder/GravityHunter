@@ -1,0 +1,101 @@
+{
+  "events": {
+    "GW150914": {
+      "reference_record_time_s": 15.440000057220459,
+      "H1": {
+        "detected": true,
+        "peak_snr": 17.92296985576914,
+        "peak_time_s": 15.439453125,
+        "peak_gps": 1126259462.4394531,
+        "whiten_psd_80pct_spread_db": 5.311215983761336
+      },
+      "L1": {
+        "detected": true,
+        "peak_snr": 12.742524398181674,
+        "peak_time_s": 15.4326171875,
+        "peak_gps": 1126259462.4326172,
+        "whiten_psd_80pct_spread_db": 4.982990259932386
+      },
+      "coincident": true,
+      "candidate_time_difference_ms": 6.8359375,
+      "cross_correlation_delay_ms": 7.32421875,
+      "experimental_chirp_mass": {
+        "success": false,
+        "estimate_solar_mass": null,
+        "fit_r2": null,
+        "ridge_points": 1,
+        "message": "Too few network ridge points survived the inspiral search corridor."
+      }
+    },
+    "GW151226": {
+      "reference_record_time_s": 15.650000095367432,
+      "H1": {
+        "detected": true,
+        "peak_snr": 7.478233629595296,
+        "peak_time_s": 15.6474609375,
+        "peak_gps": 1135136350.647461,
+        "whiten_psd_80pct_spread_db": 2.29687881886127
+      },
+      "L1": {
+        "detected": true,
+        "peak_snr": 5.970905686943603,
+        "peak_time_s": 15.646728515625,
+        "peak_gps": 1135136350.6467285,
+        "whiten_psd_80pct_spread_db": 2.801801003527224
+      },
+      "coincident": true,
+      "candidate_time_difference_ms": 0.732421875,
+      "cross_correlation_delay_ms": 0.9765625,
+      "experimental_chirp_mass": {
+        "success": true,
+        "estimate_solar_mass": 11.973230324195958,
+        "fit_r2": 0.9701005780423555,
+        "ridge_points": 10,
+        "message": "Network ridge fit completed using combined H1/L1 relative STFT power."
+      }
+    },
+    "GW170104": {
+      "reference_record_time_s": 15.599999904632568,
+      "H1": {
+        "detected": true,
+        "peak_snr": 8.465902733934264,
+        "peak_time_s": 15.6083984375,
+        "peak_gps": 1167559936.6083984,
+        "whiten_psd_80pct_spread_db": 2.124997018365047
+      },
+      "L1": {
+        "detected": true,
+        "peak_snr": 9.134155051164859,
+        "peak_time_s": 15.611083984375,
+        "peak_gps": 1167559936.611084,
+        "whiten_psd_80pct_spread_db": 2.168736072502572
+      },
+      "coincident": true,
+      "candidate_time_difference_ms": 2.685546875,
+      "cross_correlation_delay_ms": -3.173828125,
+      "experimental_chirp_mass": {
+        "success": false,
+        "estimate_solar_mass": null,
+        "fit_r2": null,
+        "ridge_points": 3,
+        "message": "Too few network ridge points survived the inspiral search corridor."
+      }
+    }
+  },
+  "quiet_controls": {
+    "QUIET150914": {
+      "H1_peak_snr": 4.146058137164466,
+      "L1_peak_snr": 3.931304258677497,
+      "H1_detected": false,
+      "L1_detected": false,
+      "coincident": false
+    },
+    "QUIET170104": {
+      "H1_peak_snr": 4.601704812827095,
+      "L1_peak_snr": 4.494696319369092,
+      "H1_detected": false,
+      "L1_detected": false,
+      "coincident": false
+    }
+  }
+}

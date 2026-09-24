@@ -36,9 +36,12 @@ def estimate_delay(
     """
     Estimate the lag that best aligns H1 with L1 using linear cross-correlation.
 
-    IMPORTANT: the sign of the returned lag follows this module's
-    np.correlate-style convention. Always validate the sign using a known
-    synthetic shift before interpreting "which detector arrived first".
+    Sign convention for estimate_delay(H1, L1):
+      delay > 0  -> H1 is delayed relative to L1 (L1 arrived first)
+      delay < 0  -> H1 leads L1 (H1 arrived first)
+
+    This convention is regression-tested with known synthetic shifts and the
+    bundled GWOSC event records.
     """
     lags, corr = fft_linear_correlation(h1, l1)
 

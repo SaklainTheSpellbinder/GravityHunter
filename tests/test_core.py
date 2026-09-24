@@ -102,3 +102,13 @@ def test_matched_filter_peak_matches_template_norm_for_exact_injection():
     )
     assert lags[i] == start
     assert np.isclose(rho[i], sigma, rtol=1e-12, atol=1e-12)
+
+
+def test_network_delay_sign_convention():
+    from gravityhunter.dsp.network import estimate_delay
+
+    h1 = np.array([0, 1, 2, 1, 0, 0, 0], dtype=float)
+    l1 = np.roll(h1, 2)  # L1 arrives two samples later than H1.
+    est = estimate_delay(h1, l1, 1000.0, max_abs_delay_s=0.005)
+    assert est.best_lag_samples == -2
+    assert np.isclose(est.delay_seconds, -0.002)

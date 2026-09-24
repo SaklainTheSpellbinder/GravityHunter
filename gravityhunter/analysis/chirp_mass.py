@@ -286,7 +286,7 @@ def estimate_chirp_mass_from_detector(
 
     # Expected ridge is used only as a corridor so persistent detector lines do
     # not win the argmax. Selected ridge points still come from real STFT power.
-    tf = template.time_from_peak
+    tf = template.time_from_reference
     ref_f = instantaneous_frequency(template)
     good_ref = np.isfinite(ref_f) & (ref_f >= low) & (ref_f <= high)
     if np.sum(good_ref) < 4:
@@ -451,7 +451,7 @@ def estimate_chirp_mass_from_network(
     band_freq = f_stft[fm]
     band_power = power[fm][:, tm]
 
-    tf = template.time_from_peak
+    tf = template.time_from_reference
     ref_f = instantaneous_frequency(template)
     good_ref = np.isfinite(ref_f) & (ref_f >= low) & (ref_f <= high)
     if np.sum(good_ref) < 4:

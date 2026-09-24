@@ -92,7 +92,7 @@ def build_animation_payload(
     # Reference waveform dynamics. Map the template peak to whichever time drives
     # the animation, so the collision is truly synchronized to the selected clock.
     tr = result.template
-    rel_t = tr.time_from_peak
+    rel_t = tr.time_from_reference
     amp = np.abs(tr.complex_template)
     amp_scale = max(float(np.max(amp)), np.finfo(float).tiny)
     amp_n = amp / amp_scale

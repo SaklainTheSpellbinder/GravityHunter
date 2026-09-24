@@ -27,7 +27,22 @@ class TemplateRecord:
         return int(self.plus.size)
 
     @property
+    def reference_index(self) -> int:
+        """Nominal coalescence/end-time index used by the GWOSC tutorial templates.
+
+        The public tutorial matched-filter convention records the trigger time at
+        the midpoint of the 32 s template, not at the exact strain-amplitude peak.
+        For the supplied even-length templates this is N//2.
+        """
+        return self.n // 2
+
+    @property
+    def time_from_reference(self) -> np.ndarray:
+        return (np.arange(self.n) - self.reference_index) / self.fs
+
+    @property
     def time_from_peak(self) -> np.ndarray:
+        """Time relative to the actual template amplitude peak (morphology only)."""
         return (np.arange(self.n) - self.peak_index) / self.fs
 
     @property
@@ -43,19 +58,23 @@ class TemplateRecord:
         return slice(i0, i1)
 
     def phase_boundaries_relative(self) -> dict[str, tuple[float, float]]:
-        """Approximate morphology regions relative to the waveform peak.
+        """Approximate morphology regions relative to the tutorial trigger reference.
 
-        These are visualization boundaries, not a GR parameter-estimation result.
+        The GWOSC tutorial templates use their midpoint as the matched-filter
+        end/coalescence-time reference, while the actual strain-amplitude peak may
+        occur a few milliseconds earlier.  These boundaries preserve that offset
+        so phase shading stays synchronized with the same clock used by detection.
+        They are visualization regions, not a GR parameter-estimation result.
         """
-        active_start = (self.active_start_index - self.peak_index) / self.fs
-        ring_end = (self.ringdown_end_index - self.peak_index) / self.fs
+        ref = self.reference_index
+        active_start = (self.active_start_index - ref) / self.fs
+        peak_rel = (self.peak_index - ref) / self.fs
+        ring_end = (self.ringdown_end_index - ref) / self.fs
 
-        # Merger is a short neighborhood around peak strain. For these BBH tutorial
-        # templates, a few tens of ms makes the three stages visually useful.
-        merger_start = max(active_start, -0.018)
-        merger_end = min(ring_end, 0.012)
+        merger_start = max(active_start, peak_rel - 0.018)
+        merger_end = min(ring_end, peak_rel + 0.012)
         if merger_end <= merger_start:
-            merger_start, merger_end = -0.015, 0.010
+            merger_start, merger_end = peak_rel - 0.015, peak_rel + 0.010
 
         return {
             "Inspiral": (active_start, merger_start),

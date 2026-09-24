@@ -7,6 +7,7 @@ from gravityhunter.analysis.real_pipeline import analyze_real_case, chirp_mass
 from gravityhunter.analysis.chirp_mass import estimate_chirp_mass_from_ridge, estimate_chirp_mass_from_detector, G_SI, C_SI, M_SUN_KG
 from gravityhunter.catalog import EventSpec
 from gravityhunter.dsp.sonification import wav_bytes
+from gravityhunter.dsp.loader import load_common_gwosc_hdf5
 from gravityhunter.dsp.templates import load_losc_template
 from gravityhunter.ui.merger_animation import build_animation_payload, merger_animation_html
 
@@ -160,3 +161,20 @@ def test_chirp_mass_ridge_math_recovers_known_mass():
     assert r2 is not None and r2 > 0.99
     assert mono is not None and mono > 0.99
     assert np.nanmedian(pointwise) == np.nanmedian(pointwise)
+
+
+def test_loader_reads_gpsstart_dataset_layout(tmp_path: Path):
+    path = tmp_path / "dataset_meta.hdf5"
+    fs = 4096.0
+    x = np.zeros(4096)
+    with h5py.File(path, "w") as f:
+        strain = f.create_group("strain")
+        ds = strain.create_dataset("Strain", data=x)
+        ds.attrs["Xspacing"] = 1.0 / fs
+        meta = f.create_group("meta")
+        meta.create_dataset("GPSstart", data=1167559921)
+        meta.create_dataset("Detector", data=np.bytes_("H1"))
+    rec = load_common_gwosc_hdf5(path)
+    assert rec.start_time == 1167559921.0
+    assert rec.detector == "H1"
+    assert rec.fs == fs

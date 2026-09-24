@@ -231,7 +231,7 @@ page = st.sidebar.radio(
         "Event Detection",
         "Detector Coincidence",
         "Source Parameters",
-        "Chirp-Mass Inference",
+        "Inspiral Diagnostics",
         "Audio Reconstruction",
         "Synthetic Validation",
     ],
@@ -255,8 +255,7 @@ if spec.kind == "synthetic":
     seed = st.sidebar.number_input("Synthetic seed", min_value=0, max_value=9999, value=7, step=1)
 
 with st.sidebar.expander("Data provenance", expanded=False):
-    st.write("Real cases are loaded from local GWOSC HDF5 files under `./data/...`.")
-    st.code("python scripts/download_demo_data.py")
+    st.write("Real cases are loaded from the bundled local GWOSC HDF5 files under `./data/...`. No network access is required.")
 
 if spec.kind != "synthetic":
     missing = missing_files(spec)
@@ -264,7 +263,7 @@ if spec.kind != "synthetic":
         st.sidebar.error("Local files are missing")
         for p in missing:
             st.sidebar.caption(str(p.relative_to(p.parents[2])))
-        st.sidebar.code("python scripts/download_demo_data.py")
+        st.sidebar.caption("Restore the corresponding H1/L1/template files under ./data from the project bundle.")
 
 # Load selected source.
 base = None
@@ -282,8 +281,7 @@ else:
             st.stop()
 
 if spec.kind != "synthetic" and real is None:
-    hero("DATA AVAILABILITY", spec.label, "Required local H1/L1 strain and reference waveform files are not present. Install the configured datasets once to enable offline analysis.")
-    st.code("python scripts/download_demo_data.py\npython -m streamlit run streamlit_app.py", language="bash")
+    hero("DATA AVAILABILITY", spec.label, "Required bundled H1/L1 strain or reference-waveform files are missing from ./data. Restore the project data folder before running this case.")
     st.stop()
 
 
@@ -337,7 +335,7 @@ if page == "Overview":
         mask = (time >= lo) & (time <= hi)
         fig = line_figure(time[mask], [det.raw[mask], det.filtered[mask]], ["Raw strain", "Filtered"], title=f"{detector_name} selected region", y_label="Strain / filtered strain")
         if event_t is not None:
-            fig.add_vline(x=event_t, line_dash="dash", line_color=GOLD, annotation_text="catalog merger")
+            fig.add_vline(x=event_t, line_dash="dash", line_color=GOLD, annotation_text="GWOSC reference")
         st.plotly_chart(fig, use_container_width=True)
     else:
         hero("CONTROLLED VALIDATION", "Synthetic signal recovery", "A deterministic injection case for regression testing of filtering, whitening, matched filtering and event-time recovery.")
@@ -372,8 +370,8 @@ elif page == "Waveform Morphology":
         h1d, l1d = real.h1.detection, real.l1.detection
         recovered = detection_recovered(h1d, event_t) and detection_recovered(l1d, event_t)
         status_banner(
-            "✦ GRAVITYHUNTER + CATALOG AGREE" if recovered else "CATALOG REFERENCE VISUALIZATION — NOT A GRAVITYHUNTER DETECTION",
-            f"The three-stage bands come from the public reference waveform around catalog coalescence t ≈ {event_t:.3f} s. H1 local peak={h1d.peak_snr:.2f}, L1 local peak={l1d.peak_snr:.2f}.",
+            "✦ GRAVITYHUNTER + REFERENCE AGREE" if recovered else "GWOSC REFERENCE VISUALIZATION — NOT A GRAVITYHUNTER DETECTION",
+            f"The three-stage bands come from the public reference waveform around the GWOSC reference coalescence t ≈ {event_t:.3f} s. H1 local peak={h1d.peak_snr:.2f}, L1 local peak={l1d.peak_snr:.2f}.",
             "good" if recovered else "quiet",
         )
 
@@ -390,7 +388,7 @@ elif page == "Waveform Morphology":
 
         # Clear reference morphology — the stage plot the presenter can point to.
         tr = real.template
-        tt = tr.time_from_peak
+        tt = tr.time_from_reference
         stage_min = min(v[0] - event_t for v in real.phase_intervals_absolute.values()) - 0.03
         stage_max = max(v[1] - event_t for v in real.phase_intervals_absolute.values()) + 0.03
         tm = (tt >= stage_min) & (tt <= stage_max)
@@ -446,15 +444,15 @@ elif page == "Event Timeline":
             if recovered_here:
                 sync_choice = st.radio(
                     "Collision synchronization",
-                    ["GravityHunter detected time", "Catalog reference time"],
+                    ["GravityHunter detected time", "GWOSC reference time"],
                     horizontal=True,
-                    help="Detected time uses the locally recovered matched-filter candidate; catalog time is the external reference.",
+                    help="Detected time uses the locally recovered matched-filter candidate; GWOSC reference time is the external validation timestamp.",
                 )
                 sync_to = "detected" if sync_choice.startswith("GravityHunter") else "catalog"
             else:
                 sync_to = "catalog"
                 st.warning(
-                    f"{detector_name} has not produced a validated GravityHunter candidate near the catalog event time, so detected-time synchronization is disabled. The animation below is explicitly synchronized to the catalog reference."
+                    f"{detector_name} has not produced a validated GravityHunter candidate near the GWOSC reference event time, so detected-time synchronization is disabled. The animation below is explicitly synchronized to the GWOSC reference."
                 )
 
             detected_gps = None if d.record.start_time is None or d.detection.peak_time_s is None else d.record.start_time + d.detection.peak_time_s
@@ -462,10 +460,10 @@ elif page == "Event Timeline":
             cards([
                 ("Record GPS start", f"{d.record.start_time:.1f}" if d.record.start_time is not None else "—", "first sample of local detector record"),
                 ("GravityHunter peak GPS", f"{detected_gps:.4f}" if detected_gps is not None else "—", f"{detector_name} matched-filter candidate"),
-                ("Catalog GPS", f"{spec.gps_event:.4f}" if spec.gps_event is not None else "—", spec.utc_event or "external reference"),
+                ("Reference GPS", f"{spec.gps_event:.4f}" if spec.gps_event is not None else "—", spec.utc_event or "external reference"),
                 ("Animation position", f"{chosen_position:.4f} s" if chosen_position is not None else "—", "selected synchronization inside record"),
             ])
-            st.caption("Catalog GPS is the external GWOSC reference. GravityHunter peak GPS is the locally recovered candidate timestamp.")
+            st.caption("Reference GPS is the GWOSC event timestamp used only for validation/synchronization. GravityHunter peak GPS is recovered from the local strain by the matched filter.")
         else:
             sync_to = "catalog"
             status_banner(
@@ -489,7 +487,7 @@ elif page == "Detector Strain":
         stride = max(1, d.record.n // 30000)
         fig = line_figure(d.record.time[::stride], [d.raw[::stride]], [f"{detector_name} raw strain"], title="Real calibrated strain", y_label="Strain")
         if event_t is not None:
-            fig.add_vline(x=event_t, line_dash="dash", line_color=GOLD, annotation_text="catalog event")
+            fig.add_vline(x=event_t, line_dash="dash", line_color=GOLD, annotation_text="GWOSC reference")
         st.plotly_chart(fig, use_container_width=True)
         f, X = rfft_spectrum(d.raw, fs)
         f2, X2 = rfft_spectrum(d.filtered, fs)
@@ -570,7 +568,7 @@ elif page == "Time–Frequency Analysis":
         heat.update_xaxes(title="Time (s)"); heat.update_yaxes(title="Frequency (Hz)")
         st.plotly_chart(style_figure(heat, height=560, title=f"{detector_name} whitened spectrogram"), use_container_width=True)
         if event_t is not None:
-            st.caption("Catalog coalescence time is shown as an external reference marker; the heatmap itself is computed from the selected detector strain.")
+            st.caption("The GWOSC event time is shown as an external reference marker; the heatmap itself is computed from the selected detector strain.")
     else:
         db = power_to_db(base["spectrogram_power"], floor_db=-70); fm=base["stft_freq"]<=320
         heat=go.Figure(go.Heatmap(x=base["stft_time"],y=base["stft_freq"][fm],z=db[fm],colorscale="Cividis",zmin=-70,zmax=0)); heat.update_xaxes(title="Time (s)");heat.update_yaxes(title="Frequency (Hz)")
@@ -594,8 +592,8 @@ elif page == "Event Detection":
             cards([
                 ("GravityHunter result", detector_status, f"candidate threshold {threshold:.2f}"),
                 ("Peak SNR", f"{dd.peak_snr:.2f}", f"{detector_name} two-quadrature match"),
-                ("Our candidate time", f"{dd.peak_time_s:.4f} s" if dd.peak_time_s is not None else "—", f"catalog truth {event_t:.4f} s"),
-                ("Candidate − catalog", f"{timing_err*1000:+.1f} ms" if timing_err is not None else "—", "validation only; catalog is not used to choose the record-wide peak"),
+                ("Our candidate time", f"{dd.peak_time_s:.4f} s" if dd.peak_time_s is not None else "—", f"GWOSC reference {event_t:.4f} s"),
+                ("Candidate − reference", f"{timing_err*1000:+.1f} ms" if timing_err is not None else "—", "validation only; the reference is not used to choose the record-wide peak"),
             ])
             if not recovered_here:
                 st.warning("The selected record contains a catalog event, but the local candidate does not satisfy the configured timing/threshold recovery criterion for this detector.")
@@ -608,7 +606,7 @@ elif page == "Event Detection":
         fig = go.Figure(go.Scatter(x=candidate_t[valid], y=d.snr[valid], mode="lines", name="SNR", line=dict(width=1.25)))
         fig.add_hline(y=threshold, line_dash="dash", line_color=CREAM_DIM, annotation_text="threshold")
         if event_t is not None:
-            fig.add_vline(x=event_t,line_dash="dot",line_color=GOLD,annotation_text="catalog merger")
+            fig.add_vline(x=event_t,line_dash="dot",line_color=GOLD,annotation_text="GWOSC reference")
         if dd.peak_time_s is not None:
             fig.add_vline(x=dd.peak_time_s,line_dash="dash",line_color=CREAM,annotation_text="candidate")
         if event_t is not None:
@@ -630,12 +628,19 @@ elif page == "Detector Coincidence":
     hero("MULTI-DETECTOR ANALYSIS", "H1/L1 coincidence and arrival delay", "Independent detector candidates are compared in absolute GPS time. Cross-correlation of a common event window provides a second estimate of relative arrival delay.")
     if real is not None:
         h1d,l1d=real.h1.detection,real.l1.detection
+        signed_candidate_ms = None
+        if h1d.peak_time_s is not None and l1d.peak_time_s is not None:
+            h1gps = real.h1.record.start_time + h1d.peak_time_s if real.h1.record.start_time is not None else h1d.peak_time_s
+            l1gps = real.l1.record.start_time + l1d.peak_time_s if real.l1.record.start_time is not None else l1d.peak_time_s
+            signed_candidate_ms = 1000.0 * (h1gps - l1gps)
         cards([
             ("H1", "DETECTED" if h1d.detected else "NO", f"SNR {h1d.peak_snr:.2f}"),
             ("L1", "DETECTED" if l1d.detected else "NO", f"SNR {l1d.peak_snr:.2f}"),
-            ("Coincidence", "YES" if real.coincidence.coincident else "NO", f"|Δt| ≤ 12 ms"),
-            ("Cross-corr delay", f"{abs(real.network_delay.delay_seconds)*1000:.2f} ms" if real.network_delay else "—", "event-window estimate"),
+            ("Coincidence", "YES" if real.coincidence.coincident else "NO", "|H1 − L1| ≤ 10 ms"),
+            ("H1 − L1 delay", f"{real.network_delay.delay_seconds*1000:+.2f} ms" if real.network_delay else "—", "positive = H1 later than L1"),
         ])
+        if signed_candidate_ms is not None:
+            st.caption(f"Matched-filter trigger difference H1 − L1: {signed_candidate_ms:+.3f} ms. Cross-correlation uses the same sign convention.")
         if spec.expected_signal and event_t is not None:
             lo,hi=event_t-0.22,event_t+0.22
             mh=(real.h1.record.time>=lo)&(real.h1.record.time<=hi)
@@ -645,7 +650,7 @@ elif page == "Detector Coincidence":
             fig2=line_figure(real.l1.record.time[ml]-event_t,[real.l1.white[ml]], ["L1"],x_label="Time from merger (s)",y_label="Whitened strain",title="L1 around merger",height=300)
             st.plotly_chart(fig2,use_container_width=True)
             if real.network_delay:
-                lag_ms=real.network_delay.lags/fs*1000; mm=np.abs(lag_ms)<=12
+                lag_ms=real.network_delay.lags/fs*1000; mm=np.abs(lag_ms)<=10
                 cc=go.Figure(go.Scatter(x=lag_ms[mm],y=real.network_delay.correlation[mm],mode="lines",name="cross-correlation"));cc.add_vline(x=real.network_delay.delay_seconds*1000,line_dash="dash",line_color=GOLD);cc.update_xaxes(title="Lag (ms)");cc.update_yaxes(title="Correlation")
                 st.plotly_chart(style_figure(cc,height=390,title="H1/L1 cross-correlation"),use_container_width=True)
         else:
@@ -677,12 +682,12 @@ elif page == "Source Parameters":
             st.markdown(f"Reference metadata: `{spec.source_url}`")
 
 
-# ───────────────────────────── Chirp-Mass Inference ─────────────────────────────
-elif page == "Chirp-Mass Inference":
+# ───────────────────────────── Inspiral Diagnostics ─────────────────────────────
+elif page == "Inspiral Diagnostics":
     hero(
-        "SOURCE INFERENCE",
-        "Chirp mass from inspiral frequency evolution",
-        "A combined H1/L1 time-frequency ridge is fit to the leading-order inspiral relation t = tc − A f^(-8/3). Numerical df/dt is retained as a secondary diagnostic rather than the primary estimator.",
+        "INSPIRAL DIAGNOSTICS",
+        "Frequency evolution and experimental chirp-mass fit",
+        "A combined H1/L1 time-frequency ridge is fit to the leading-order inspiral relation t = tc − A f^(-8/3). This ridge-based mass estimate is an experimental diagnostic; event detection does not depend on it.",
     )
     if real is None:
         st.info("The synthetic validation chirp was not generated from a physical compact-binary inspiral law, so GravityHunter intentionally does not assign it a black-hole chirp mass. Select a real merger case.")
@@ -702,15 +707,23 @@ elif page == "Chirp-Mass Inference":
             if est.success and ref is not None and ref > 0:
                 err = abs(est.estimated_mass_solar - ref) / ref * 100.0
             cards([
-                ("GravityHunter estimate", f"{est.estimated_mass_solar:.2f} M☉" if est.estimated_mass_solar is not None else "unstable", "H1+L1 • leading-order detector-frame fit"),
+                ("Experimental ridge fit", f"{est.estimated_mass_solar:.2f} M☉" if est.estimated_mass_solar is not None else "unavailable", "H1+L1 • leading-order detector-frame diagnostic"),
                 ("Template reference", f"{ref:.2f} M☉" if ref is not None else "—", "computed from template m₁,m₂ metadata"),
                 ("Catalog source-frame", f"{spec.chirp_mass_source:.2f} M☉" if spec.chirp_mass_source is not None else "—", "published source-frame median"),
                 ("Fit agreement", f"R² {est.fit_r2:.3f}" if est.fit_r2 is not None else "—", f"template-ref error {err:.1f}%" if err is not None else "quality diagnostic"),
             ])
             if est.success:
-                status_banner("CHIRP RIDGE FIT COMPLETED", est.message, "good")
+                ref_disagreement = None if ref is None or ref <= 0 else abs(est.estimated_mass_solar - ref) / ref
+                if ref_disagreement is not None and ref_disagreement > 0.20:
+                    status_banner(
+                        "EXPERIMENTAL FIT — MODEL DISAGREEMENT",
+                        "The ridge fit converged mathematically, but it differs by more than 20% from the chirp mass associated with the reference waveform. Treat this as a time-frequency diagnostic, not a validated source-parameter measurement.",
+                        "bad",
+                    )
+                else:
+                    status_banner("EXPERIMENTAL RIDGE FIT COMPLETED", est.message, "good")
             else:
-                status_banner("RIDGE FOUND, MASS FIT UNSTABLE", est.message, "bad")
+                status_banner("NO STABLE RIDGE-MASS FIT", est.message, "bad")
 
             if est.inspiral_interval_s is not None and est.stft_power.size:
                 a, b = est.inspiral_interval_s

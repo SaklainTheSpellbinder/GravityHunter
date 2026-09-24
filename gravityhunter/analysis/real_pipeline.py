@@ -303,7 +303,7 @@ def _estimate_network_delay_from_candidates(
     h1: DetectorResult,
     l1: DetectorResult,
     *,
-    max_abs_delay_s: float = 0.012,
+    max_abs_delay_s: float = 0.010,
 ) -> DelayEstimate | None:
     """Cross-correlate a common absolute-time window around detected candidates."""
     h1_gps = _candidate_gps(h1)
@@ -318,7 +318,7 @@ def _estimate_network_delay_from_candidates(
     center_abs = 0.5 * (h1_gps + l1_gps)
     center_h = center_abs - h1.record.start_time
     center_l = center_abs - l1.record.start_time
-    half = 0.50
+    half = 0.35
     fs = h1.record.fs
 
     def extract(d: DetectorResult, center: float) -> np.ndarray | None:
@@ -370,7 +370,7 @@ def analyze_real_case(spec: EventSpec, *, threshold: float | None = None) -> Rea
     # noise weighting. Filtering is only part of the displayed conditioned data.
     tplus = template.plus[compact].copy()
     tcross = template.cross[compact].copy()
-    ref_idx = template.peak_index - compact.start
+    ref_idx = template.reference_index - compact.start
 
     th = float(spec.threshold if threshold is None else threshold)
     h1 = _analyze_detector(
@@ -388,9 +388,9 @@ def analyze_real_case(spec: EventSpec, *, threshold: float | None = None) -> Rea
         l1_detected=l1.detection.detected,
         h1_time_s=h1_time,
         l1_time_s=l1_time,
-        max_time_difference_s=0.012,
+        max_time_difference_s=0.010,
     )
-    delay = _estimate_network_delay_from_candidates(h1, l1, max_abs_delay_s=0.012)
+    delay = _estimate_network_delay_from_candidates(h1, l1, max_abs_delay_s=0.010)
 
     phase_rel = template.phase_boundaries_relative()
     phase_abs: dict[str, tuple[float, float]] = {}

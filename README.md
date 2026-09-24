@@ -1,152 +1,88 @@
 # GravityHunter — Gravitational-Wave Signal Analysis
 
-GravityHunter is a local gravitational-wave signal-analysis application built around public GWOSC strain data. It runs the same DSP pipeline for selected compact-binary merger records and off-source controls, with a synthetic injection case retained for regression validation.
+GravityHunter is an offline gravitational-wave signal-analysis application built around bundled public GWOSC H1/L1 strain records. The application runs the same DSP backend on known compact-binary merger records and off-source controls, with a synthetic injection retained for algorithm validation.
 
-## What the current version does
-
-The sidebar can select:
+## Bundled cases
 
 - **GW150914** — real H1 + L1 strain
 - **GW151226** — real H1 + L1 strain
 - **GW170104** — real H1 + L1 strain
-- **Quiet real data before GW150914** — negative/no-merger control
-- **Quiet real data after GW170104** — negative/no-merger control
-- **Synthetic validation chirp** — controlled algorithm test
+- **Quiet interval from the GW150914 record** — negative control
+- **Quiet interval from the GW170104 record** — negative control
+- **Synthetic validation chirp** — controlled signal-injection test
 
-For a real event, the same backend executes:
+No upload or network download is required for the bundled cases.
+
+## Core analysis path
 
 ```text
 local H1/L1 HDF5
         ↓
-strain + metadata loading
+strain + GPS metadata
         ↓
 off-source Welch PSD
         ↓
-notch filtering
-        ↓
-band-pass filtering
-        ↓
-PSD whitening
+signal conditioning + whitening
         ↓
 STFT / spectrogram
         ↓
-public plus/cross waveform template
+public plus/cross waveform reference
         ↓
-PSD-weighted two-quadrature matched filter
+PSD-weighted two-basis matched filter
         ↓
 SNR vs time
         ↓
-H1/L1 candidate times
+H1/L1 candidate timestamps
         ↓
-cross-correlation delay
-        ↓
-coincidence result
+coincidence + cross-correlation delay
 ```
 
-The quiet cases go through the **same** processing path. They are not hard-coded blank examples.
+Detection is performed on tapered raw strain and template waveforms with inverse-PSD frequency weighting. The separately conditioned/whitened time series are used for visualization, STFT, cross-correlation and audio reconstruction.
 
 ## Analysis views
 
 ### Overview
-Overall status, H1/L1 SNR summary, and selected real-data region.
+Selected case, detector status, candidate SNRs and network result.
 
 ### Waveform Morphology
-Waveform-level morphology view:
-- public reference waveform with approximate **Inspiral → Merger → Ringdown** regions;
-- real whitened detector data in the same event neighborhood;
-- real spectrogram with the reference instantaneous-frequency ridge overlaid.
-
-The stage boundaries are visualization aids, not a full GR parameter-estimation result.
+Reference inspiral/merger/ringdown morphology shown beside the processed real strain and spectrogram. The phase regions are visualization regions derived from the public reference waveform; they are not independent GR parameter inference.
 
 ### Event Timeline
-A browser-side synchronized animation for real cases:
-- plays the complete selected detector record on a master clock;
-- shows live **record time + absolute GPS time**;
-- can synchronize the collision to GravityHunter's detected time or the catalog reference time;
-- uses reference GW phase/frequency to drive the schematic orbital motion;
-- uses a Newtonian inspiral separation estimate only before merger;
-- transitions two compact bodies into one remnant and a damped ringdown visualization;
-- shows the real processed detector strain and matched-filter SNR with moving cursors;
-- supports pause, scrub, jump-to-merger, full-record playback, and 5×/20×/50× slow-motion merger replay;
-- quiet/no-event cases deliberately do **not** trigger a collision.
-
-The fabric/orbit is a schematic explanatory visualization, not a numerical GR/spacetime simulation.
+Synchronized 32-second event visualization with record time, absolute GPS time, processed strain, matched-filter SNR and schematic binary motion. The collision can use a validated GravityHunter trigger time or the external GWOSC reference timestamp. Quiet controls do not trigger a merger animation.
 
 ### Detector Strain
-Raw strain and frequency-domain content.
+Raw calibrated strain and Fourier magnitude spectrum.
 
 ### Spectrum & Noise
-Welch PSD / ASD used to characterize colored detector noise.
+Welch PSD / ASD used to characterize the detector's colored noise.
 
 ### Signal Conditioning
-Before/after filtering and whitening comparisons.
+Band-pass/notch conditioning and PSD-based whitening with before/after comparisons.
 
 ### Time–Frequency Analysis
-Real STFT spectrogram.
+STFT spectrogram calculated from the selected real detector channel.
 
 ### Event Detection
-Quantitative event-candidate view: PSD-weighted template match, SNR threshold, candidate time, and timing error relative to the catalog reference.
+GravityHunter's quantitative matched-filter candidate: SNR-vs-time, fixed/default candidate threshold and recovered timestamp. This is the main page for the project's own event-detection claim.
 
 ### Detector Coincidence
-H1/L1 detection status, candidate-time coincidence, and cross-correlation arrival-delay estimate.
+Independent H1/L1 candidate status, absolute-time coincidence and waveform cross-correlation delay.
 
 ### Source Parameters
-Published/reference event metadata:
-- primary black-hole mass;
-- secondary black-hole mass;
-- chirp mass;
-- final/remnant mass;
-- approximate radiated mass-energy;
-- luminosity distance;
-- sky-localization area;
-- published network SNR.
+Published/reference event properties kept explicitly separate from quantities calculated by GravityHunter.
 
-GravityHunter does not infer the full astrophysical posterior. **Chirp-Mass Inference** provides one leading-order signal-derived source-parameter estimate from the inspiral frequency evolution.
-
-### Chirp-Mass Inference
-Advanced DSP inference from the selected real detector:
-
-```text
-H1/L1 whitened strain
-→ dedicated inspiral STFTs
-→ per-detector background normalization
-→ combined H1/L1 relative-power map
-→ template-guided local search corridor
-→ ridge frequencies selected from measured network STFT power
-→ smooth f(t)
-→ robust fit of t = tc − A f^(-8/3)
-→ leading-order chirp-mass estimate
-```
-
-The page shows the combined H1/L1 time-frequency power map, extracted ridge, `f(t)`, `df/dt` diagnostic, fitted chirp mass, template-reference chirp mass, and catalog source-frame chirp mass. This is a leading-order inference method, not a replacement for full Bayesian parameter estimation.
+### Inspiral Diagnostics
+Experimental H1+L1 spectrogram-ridge analysis. It displays frequency evolution, sweep rate and a leading-order chirp-mass diagnostic where the fit is stable. This page is **not** part of the core event-detection decision and is not presented as full LVK parameter estimation.
 
 ### Audio Reconstruction
-Audio generated from the same processed detector time series. Includes direct playback and an optional +400 Hz frequency-shifted version for easier listening.
+Audio generated from the same processed detector strain, including an optional +400 Hz frequency translation.
 
 ### Synthetic Validation
-Synthetic controlled experiment retained for testing the algorithm while varying signal strength.
+Controlled injection experiment for checking detector response as signal strength changes.
 
-## One-time setup
+## Local data layout
 
-Create and activate a Python environment if desired, then install dependencies:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Download the configured local data once while online:
-
-```bash
-python scripts/download_demo_data.py
-```
-
-On Windows you can instead double-click:
-
-```text
-setup_data.bat
-```
-
-This creates:
+The final project bundle already contains:
 
 ```text
 data/
@@ -159,13 +95,20 @@ data/
 ├── GW170104/
 │   ├── H1.hdf5
 │   └── L1.hdf5
-└── templates/
-    ├── GW150914_4_template.hdf5
-    ├── GW151226_4_template.hdf5
-    └── GW170104_4_template.hdf5
+├── templates/
+│   ├── GW150914_4_template.hdf5
+│   ├── GW151226_4_template.hdf5
+│   └── GW170104_4_template.hdf5
+└── SHA256SUMS.txt
 ```
 
-Once those files exist, the application runs offline.
+These are the exact files used for the final backend acceptance test. There is no downloader dependency.
+
+## Install
+
+```bash
+python -m pip install -r requirements.txt
+```
 
 ## Run
 
@@ -173,46 +116,48 @@ Once those files exist, the application runs offline.
 python -m streamlit run streamlit_app.py
 ```
 
-or on Windows:
+On Windows you can also run:
 
 ```text
 run_local.bat
 ```
 
-Then open the localhost address printed by Streamlit, normally:
+Streamlit normally serves the app at:
 
 ```text
 http://localhost:8501
 ```
 
-## Tests
+## Verification
+
+Run the complete automated test suite:
 
 ```bash
 pytest -q
 ```
 
-The tests include:
-- manual DFT vs NumPy FFT;
-- direct vs FFT correlation;
-- confusion metrics;
-- an end-to-end GWOSC-shaped mock HDF5 real-data path;
-- H1/L1 injected delay recovery;
-- template loading;
-- sonification helper;
-- chirp-mass formula;
-- recovery of a known physical chirp mass from an analytic inspiral ridge;
-- animation payload/GPS synchronization generation;
-- browser animation JavaScript syntax checking during development;
-- chirp-mass real-pipeline execution on GWOSC-shaped mock HDF5.
+Run the bundled real-data acceptance summary:
 
-## Important interpretation
+```bash
+python scripts/validate_bundled_data.py
+```
 
-- **Spectrogram**: visually shows time-frequency evolution; a rising ridge is the chirp/inspiral signature.
-- **Matched-filter SNR**: the local quantitative candidate statistic used by GravityHunter.
-- **Cross-correlation**: estimates relative H1/L1 lag; it is not the primary event-detection statistic.
-- **Waveform Morphology**: combines measured conditioned strain with a clearly labelled public reference template to separate observed data from reference inspiral/merger/ringdown morphology.
-- **Quiet controls**: show what happens when the same detector code is applied where no catalog merger is expected.
+The validation script uses no network access and writes:
 
-GravityHunter is an independent signal-analysis prototype and is not the production LIGO/Virgo/KAGRA search or parameter-estimation pipeline.
+```text
+validation_results.json
+```
 
+See [`FINAL_BACKEND_VALIDATION.md`](FINAL_BACKEND_VALIDATION.md) for the measured final results and limitations.
 
+## Interpretation boundaries
+
+- **Matched-filter SNR** is GravityHunter's primary single-detector event statistic.
+- **H1/L1 coincidence and delay** provide network consistency checks.
+- **Spectrogram morphology** is a time-frequency visualization, not the primary detector.
+- **Reference waveform overlays** are external model/reference information and are labelled separately from measured strain.
+- **Source Parameters** are published metadata, not inferred by this application.
+- **Inspiral Diagnostics** is experimental and does not affect detection.
+- The fixed project SNR threshold is validated only for the bundled demonstration cases and controls; it is not a published astrophysical-significance threshold.
+
+GravityHunter is an independent course-project signal-analysis implementation, not the production LIGO/Virgo/KAGRA search or Bayesian parameter-estimation pipeline.
